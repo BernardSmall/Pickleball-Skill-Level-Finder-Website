@@ -2,35 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>PickleRate | Find Your Pickleball Level</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickleRate | Pickleball Self-Assessment</title>
 
     <style>
         :root {
             --primary: #176b4d;
             --primary-dark: #0f5139;
-            --primary-light: #e7f5ef;
-            --accent: #f5b942;
-
+            --primary-light: #e8f5ef;
+            --accent: #f3b43f;
+            --accent-light: #fff6df;
             --background: #f4f7f6;
             --surface: #ffffff;
             --surface-muted: #f8faf9;
-
-            --text: #18201d;
-            --text-muted: #66706c;
-
-            --border: #dfe6e3;
-            --danger: #c33c3c;
+            --text: #17211d;
+            --text-muted: #66726d;
+            --border: #dde6e2;
+            --danger: #c83c3c;
             --success: #16805a;
-
-            --shadow:
-                0 14px 40px rgba(20, 48, 38, 0.09);
-
+            --shadow: 0 16px 45px rgba(20, 48, 38, 0.09);
             --radius-small: 10px;
             --radius-medium: 16px;
             --radius-large: 24px;
@@ -48,23 +38,16 @@
 
         body {
             min-height: 100vh;
-            font-family:
-                Inter,
-                Arial,
-                Helvetica,
-                sans-serif;
+            font-family: Inter, Arial, Helvetica, sans-serif;
             color: var(--text);
             background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(245, 185, 66, 0.14),
-                    transparent 28%
-                ),
+                radial-gradient(circle at top right, rgba(243, 180, 63, 0.14), transparent 26%),
                 var(--background);
         }
 
         button,
-        input {
+        input,
+        textarea {
             font: inherit;
         }
 
@@ -95,7 +78,7 @@
             align-items: center;
             gap: 10px;
             font-size: 1.25rem;
-            font-weight: 800;
+            font-weight: 850;
             color: var(--primary-dark);
         }
 
@@ -104,7 +87,7 @@
             place-items: center;
             width: 40px;
             height: 40px;
-            color: white;
+            color: #fff;
             background: var(--primary);
             border-radius: 50%;
             transform: rotate(-8deg);
@@ -119,7 +102,7 @@
             color: var(--text-muted);
             background: transparent;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .site-nav button:hover {
@@ -135,8 +118,6 @@
             min-height: calc(100vh - 72px);
             padding: 56px 0;
         }
-
-        /* Landing page */
 
         .hero {
             display: grid;
@@ -155,11 +136,11 @@
             background: var(--primary-light);
             border-radius: 999px;
             font-size: 0.88rem;
-            font-weight: 700;
+            font-weight: 800;
         }
 
-        .hero h1 {
-            max-width: 720px;
+        .hero h1,
+        .results-heading h1 {
             font-size: clamp(2.7rem, 6vw, 5rem);
             line-height: 0.98;
             letter-spacing: -0.055em;
@@ -169,23 +150,35 @@
             color: var(--primary);
         }
 
-        .hero-description {
-            max-width: 650px;
-            margin-top: 24px;
+        .hero-description,
+        .results-heading p,
+        .about-copy,
+        .section-description {
             color: var(--text-muted);
-            font-size: 1.12rem;
             line-height: 1.75;
         }
 
-        .hero-actions {
+        .hero-description {
+            max-width: 650px;
+            margin-top: 24px;
+            font-size: 1.12rem;
+        }
+
+        .hero-actions,
+        .results-actions,
+        .history-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
+        }
+
+        .hero-actions {
             margin-top: 32px;
         }
 
         .primary-button,
-        .secondary-button {
+        .secondary-button,
+        .danger-button {
             min-height: 50px;
             padding: 0 22px;
             border-radius: var(--radius-small);
@@ -193,15 +186,15 @@
             transition:
                 transform 0.2s ease,
                 background 0.2s ease,
-                box-shadow 0.2s ease;
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
         }
 
         .primary-button {
-            color: white;
+            color: #fff;
             background: var(--primary);
             border: 1px solid var(--primary);
-            box-shadow:
-                0 10px 22px rgba(23, 107, 77, 0.2);
+            box-shadow: 0 10px 22px rgba(23, 107, 77, 0.2);
         }
 
         .primary-button:hover {
@@ -211,12 +204,23 @@
 
         .secondary-button {
             color: var(--primary-dark);
-            background: white;
+            background: #fff;
             border: 1px solid var(--border);
         }
 
         .secondary-button:hover {
             border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .danger-button {
+            color: #fff;
+            background: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .danger-button:hover {
+            filter: brightness(0.92);
             transform: translateY(-2px);
         }
 
@@ -232,7 +236,7 @@
             align-items: center;
             gap: 10px;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 650;
         }
 
         .feature-icon {
@@ -241,20 +245,27 @@
             flex: 0 0 auto;
             width: 28px;
             height: 28px;
-            color: white;
+            color: #fff;
             background: var(--success);
             border-radius: 50%;
             font-size: 0.8rem;
+        }
+
+        .hero-card,
+        .question-card,
+        .result-card,
+        .history-card,
+        .about-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+            box-shadow: var(--shadow);
         }
 
         .hero-card {
             position: relative;
             padding: 30px;
             overflow: hidden;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-large);
-            box-shadow: var(--shadow);
         }
 
         .hero-card::before {
@@ -277,7 +288,7 @@
         .preview-label {
             color: var(--text-muted);
             font-size: 0.88rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
@@ -292,21 +303,35 @@
 
         .preview-range {
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 650;
+        }
+
+        .preview-bars,
+        .category-list {
+            display: grid;
+            gap: 18px;
         }
 
         .preview-bars {
-            display: grid;
-            gap: 18px;
             margin-top: 34px;
         }
 
-        .preview-bar-heading {
+        .preview-bar-heading,
+        .category-row-heading,
+        .confidence-heading,
+        .assessment-meta,
+        .history-header {
             display: flex;
             justify-content: space-between;
+            gap: 20px;
+            font-weight: 750;
+        }
+
+        .preview-bar-heading,
+        .category-row-heading,
+        .confidence-heading {
             margin-bottom: 7px;
-            font-size: 0.88rem;
-            font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .bar-track {
@@ -318,7 +343,7 @@
 
         .bar-fill {
             height: 100%;
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--primary), #27a174);
             border-radius: inherit;
         }
 
@@ -332,11 +357,16 @@
             line-height: 1.55;
         }
 
-        /* Assessment */
+        .assessment-wrapper,
+        .results-wrapper,
+        .history-wrapper,
+        .about-wrapper {
+            width: min(900px, 100%);
+            margin: 0 auto;
+        }
 
         .assessment-wrapper {
             width: min(760px, 100%);
-            margin: 0 auto;
         }
 
         .assessment-header {
@@ -344,14 +374,9 @@
         }
 
         .assessment-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
             margin-bottom: 12px;
             color: var(--text-muted);
             font-size: 0.9rem;
-            font-weight: 700;
         }
 
         .progress-track {
@@ -365,22 +390,13 @@
         .progress-fill {
             width: 0;
             height: 100%;
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--primary),
-                    #27a174
-                );
+            background: linear-gradient(90deg, var(--primary), #27a174);
             border-radius: inherit;
             transition: width 0.3s ease;
         }
 
         .question-card {
             padding: clamp(24px, 5vw, 42px);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-large);
-            box-shadow: var(--shadow);
         }
 
         .question-category {
@@ -391,7 +407,7 @@
             background: var(--primary-light);
             border-radius: 999px;
             font-size: 0.8rem;
-            font-weight: 800;
+            font-weight: 850;
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
@@ -447,11 +463,10 @@
             width: 18px;
             height: 18px;
             content: "";
-            background: white;
+            background: #fff;
             border: 2px solid #aab7b2;
             border-radius: 50%;
-            box-shadow:
-                inset 0 0 0 4px white;
+            box-shadow: inset 0 0 0 4px #fff;
         }
 
         .answer-option label:hover {
@@ -475,7 +490,7 @@
             margin-top: 16px;
             color: var(--danger);
             font-size: 0.9rem;
-            font-weight: 700;
+            font-weight: 750;
         }
 
         .assessment-actions {
@@ -489,28 +504,10 @@
             min-width: 130px;
         }
 
-        /* Results */
-
-        .results-wrapper {
-            width: min(980px, 100%);
-            margin: 0 auto;
-        }
-
-        .results-heading {
+        .results-heading,
+        .page-heading {
             margin-bottom: 28px;
             text-align: center;
-        }
-
-        .results-heading h1 {
-            font-size: clamp(2.2rem, 6vw, 4rem);
-            letter-spacing: -0.045em;
-        }
-
-        .results-heading p {
-            max-width: 670px;
-            margin: 12px auto 0;
-            color: var(--text-muted);
-            line-height: 1.65;
         }
 
         .rating-summary {
@@ -519,13 +516,12 @@
             gap: 20px;
         }
 
-        .result-card {
+        .result-card,
+        .history-card,
+        .about-card {
             padding: 26px;
-            background: var(--surface);
-            border: 1px solid var(--border);
             border-radius: var(--radius-medium);
-            box-shadow:
-                0 8px 24px rgba(20, 48, 38, 0.06);
+            box-shadow: 0 8px 24px rgba(20, 48, 38, 0.06);
         }
 
         .rating-card {
@@ -554,52 +550,49 @@
         .rating-level {
             margin-top: 12px;
             font-size: 1.25rem;
-            font-weight: 800;
+            font-weight: 850;
+        }
+
+        .rating-range,
+        .muted {
+            color: var(--text-muted);
         }
 
         .rating-range {
             margin-top: 7px;
-            color: var(--text-muted);
         }
 
         .confidence-wrapper {
             margin-top: 24px;
         }
 
-        .confidence-heading {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.88rem;
-            font-weight: 750;
-        }
-
-        .category-list {
-            display: grid;
-            gap: 18px;
-        }
-
-        .category-row-heading {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 7px;
-            font-size: 0.92rem;
-            font-weight: 750;
-        }
-
         .category-score {
             color: var(--primary);
         }
 
-        .insight-grid {
+        .insight-grid,
+        .drill-grid,
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
 
-        .result-card h3 {
+        .insight-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .drill-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .result-card h3,
+        .history-card h3,
+        .about-card h3 {
             margin-bottom: 16px;
             font-size: 1.12rem;
         }
@@ -635,20 +628,103 @@
             content: "◆";
         }
 
-        .result-explanation {
+        .result-explanation,
+        .training-plan {
             margin-top: 20px;
         }
 
-        .result-explanation p {
+        .result-explanation p,
+        .drill-card p,
+        .about-card p,
+        .history-card p {
             color: var(--text-muted);
-            line-height: 1.75;
+            line-height: 1.7;
+        }
+
+        .drill-card {
+            padding: 22px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-medium);
+        }
+
+        .drill-time {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 6px 10px;
+            color: var(--primary-dark);
+            background: var(--primary-light);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 850;
+        }
+
+        .drill-card h4 {
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
 
         .results-actions {
-            display: flex;
             justify-content: center;
-            gap: 14px;
             margin-top: 28px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .history-header {
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .history-rating {
+            color: var(--primary);
+            font-size: 1.7rem;
+            font-weight: 900;
+        }
+
+        .history-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .stat-card {
+            padding: 22px;
+            text-align: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-medium);
+        }
+
+        .stat-value {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            padding: 28px;
+            color: var(--text-muted);
+            text-align: center;
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-medium);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
         }
 
         .footer {
@@ -658,18 +734,18 @@
             font-size: 0.88rem;
         }
 
-        @media (max-width: 820px) {
-            .hero {
+        @media (max-width: 900px) {
+            .hero,
+            .rating-summary,
+            .insight-grid,
+            .drill-grid,
+            .stats-grid,
+            .about-grid {
                 grid-template-columns: 1fr;
             }
 
             .hero-card {
                 max-width: 580px;
-            }
-
-            .rating-summary,
-            .insight-grid {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -696,11 +772,15 @@
                 grid-template-columns: 1fr;
             }
 
-            .hero-actions {
+            .hero-actions,
+            .results-actions,
+            .history-actions {
                 flex-direction: column;
             }
 
-            .hero-actions button {
+            .hero-actions button,
+            .results-actions button,
+            .history-actions button {
                 width: 100%;
             }
 
@@ -709,14 +789,6 @@
             }
 
             .assessment-actions button {
-                width: 100%;
-            }
-
-            .results-actions {
-                flex-direction: column;
-            }
-
-            .results-actions button {
                 width: 100%;
             }
         }
@@ -731,27 +803,17 @@
         </div>
 
         <nav class="site-nav">
-            <button type="button" data-page="home">
-                Home
-            </button>
-
-            <button type="button" data-page="assessment">
-                Assessment
-            </button>
-
-            <button type="button" id="aboutButton">
-                About
-            </button>
+            <button type="button" data-page="home">Home</button>
+            <button type="button" data-page="assessment">Assessment</button>
+            <button type="button" data-page="history">History</button>
+            <button type="button" data-page="about">About</button>
         </nav>
     </header>
 
     <main>
-        <!-- HOME PAGE -->
         <section id="homePage" class="page-section hero">
             <div>
-                <div class="eyebrow">
-                    Evidence-based pickleball self-assessment
-                </div>
+                <div class="eyebrow">Evidence-based pickleball self-assessment</div>
 
                 <h1>
                     Find your real
@@ -759,66 +821,50 @@
                 </h1>
 
                 <p class="hero-description">
-                    Answer practical questions about your consistency,
-                    shot selection and competitive performance. PickleRate
-                    will estimate your current level, explain your strengths
-                    and identify the skills most likely to improve your game.
+                    Answer practical questions about your consistency, shot selection,
+                    defensive ability, positioning and competitive performance.
+                    PickleRate estimates your current level and shows exactly what
+                    is holding your game back.
                 </p>
 
                 <div class="hero-actions">
-                    <button
-                        type="button"
-                        class="primary-button"
-                        id="startAssessmentButton"
-                    >
-                        Start assessment
+                    <button type="button" class="primary-button" id="startAssessmentButton">
+                        Start full assessment
                     </button>
 
-                    <button
-                        type="button"
-                        class="secondary-button"
-                        id="learnMoreButton"
-                    >
-                        How it works
+                    <button type="button" class="secondary-button" id="viewHistoryButton">
+                        View saved results
                     </button>
                 </div>
 
                 <div class="feature-list">
                     <div class="feature-item">
                         <span class="feature-icon">✓</span>
-                        <span>Approximately five minutes</span>
+                        <span>42 evidence-based questions</span>
                     </div>
 
                     <div class="feature-item">
                         <span class="feature-icon">✓</span>
-                        <span>Skill category breakdown</span>
+                        <span>Eight skill categories</span>
                     </div>
 
                     <div class="feature-item">
                         <span class="feature-icon">✓</span>
-                        <span>Estimated rating range</span>
+                        <span>Estimated rating and range</span>
                     </div>
 
                     <div class="feature-item">
                         <span class="feature-icon">✓</span>
-                        <span>Personal improvement priorities</span>
+                        <span>Personal practice recommendations</span>
                     </div>
                 </div>
             </div>
 
             <aside class="hero-card">
                 <div class="rating-preview">
-                    <div class="preview-label">
-                        Example result
-                    </div>
-
-                    <div class="preview-rating">
-                        3.72
-                    </div>
-
-                    <div class="preview-range">
-                        Likely range: 3.5–4.0
-                    </div>
+                    <div class="preview-label">Example result</div>
+                    <div class="preview-rating">3.72</div>
+                    <div class="preview-range">Likely range: 3.50–4.00</div>
 
                     <div class="preview-bars">
                         <div>
@@ -826,12 +872,8 @@
                                 <span>Serve and return</span>
                                 <span>82%</span>
                             </div>
-
                             <div class="bar-track">
-                                <div
-                                    class="bar-fill"
-                                    style="width: 82%"
-                                ></div>
+                                <div class="bar-fill" style="width: 82%"></div>
                             </div>
                         </div>
 
@@ -840,12 +882,8 @@
                                 <span>Kitchen play</span>
                                 <span>76%</span>
                             </div>
-
                             <div class="bar-track">
-                                <div
-                                    class="bar-fill"
-                                    style="width: 76%"
-                                ></div>
+                                <div class="bar-fill" style="width: 76%"></div>
                             </div>
                         </div>
 
@@ -854,561 +892,704 @@
                                 <span>Resets and defence</span>
                                 <span>58%</span>
                             </div>
-
                             <div class="bar-track">
-                                <div
-                                    class="bar-fill"
-                                    style="width: 58%"
-                                ></div>
+                                <div class="bar-fill" style="width: 58%"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="home-note">
-                        PickleRate is a self-assessment tool rather than an
+                        PickleRate is a self-assessment tool. It does not replace an
                         official DUPR, tournament or governing-body rating.
                     </div>
                 </div>
             </aside>
         </section>
 
-        <!-- ASSESSMENT PAGE -->
-        <section
-            id="assessmentPage"
-            class="page-section hidden"
-        >
+        <section id="assessmentPage" class="page-section hidden">
             <div class="assessment-wrapper">
                 <div class="assessment-header">
                     <div class="assessment-meta">
-                        <span id="questionCounter">
-                            Question 1 of 10
-                        </span>
-
-                        <span id="progressPercentage">
-                            10%
-                        </span>
+                        <span id="questionCounter">Question 1 of 42</span>
+                        <span id="progressPercentage">2%</span>
                     </div>
 
                     <div class="progress-track">
-                        <div
-                            id="progressFill"
-                            class="progress-fill"
-                        ></div>
+                        <div id="progressFill" class="progress-fill"></div>
                     </div>
                 </div>
 
                 <article class="question-card">
-                    <span
-                        id="questionCategory"
-                        class="question-category"
-                    ></span>
-
+                    <span id="questionCategory" class="question-category"></span>
                     <h2 id="questionText"></h2>
-
-                    <p
-                        id="questionHelp"
-                        class="question-help"
-                    ></p>
-
-                    <div
-                        id="answerOptions"
-                        class="answer-options"
-                    ></div>
-
-                    <div
-                        id="validationMessage"
-                        class="validation-message"
-                        aria-live="polite"
-                    ></div>
+                    <p id="questionHelp" class="question-help"></p>
+                    <div id="answerOptions" class="answer-options"></div>
+                    <div id="validationMessage" class="validation-message" aria-live="polite"></div>
                 </article>
 
                 <div class="assessment-actions">
-                    <button
-                        type="button"
-                        class="secondary-button"
-                        id="previousButton"
-                    >
+                    <button type="button" class="secondary-button" id="previousButton">
                         Previous
                     </button>
 
-                    <button
-                        type="button"
-                        class="primary-button"
-                        id="nextButton"
-                    >
+                    <button type="button" class="primary-button" id="nextButton">
                         Next
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- RESULTS PAGE -->
-        <section
-            id="resultsPage"
-            class="page-section hidden"
-        >
+        <section id="resultsPage" class="page-section hidden">
             <div class="results-wrapper">
                 <div class="results-heading">
-                    <div class="eyebrow">
-                        Your assessment result
-                    </div>
-
+                    <div class="eyebrow">Your assessment result</div>
                     <h1>Your PickleRate profile</h1>
-
                     <p>
-                        This estimate is based on your reported consistency,
-                        decision-making and performance across several
-                        important parts of the game.
+                        Your estimate is based on your reported consistency,
+                        execution, shot selection and competitive performance.
                     </p>
                 </div>
 
                 <div class="rating-summary">
                     <article class="result-card rating-card">
                         <h2>Estimated rating</h2>
-
-                        <div
-                            id="finalRating"
-                            class="rating-number"
-                        >
-                            3.50
-                        </div>
-
-                        <div
-                            id="finalLevel"
-                            class="rating-level"
-                        >
-                            Developing 3.5
-                        </div>
-
-                        <div
-                            id="finalRange"
-                            class="rating-range"
-                        >
+                        <div id="finalRating" class="rating-number">3.50</div>
+                        <div id="finalLevel" class="rating-level">Competitive 3.5</div>
+                        <div id="finalRange" class="rating-range">
                             Likely range: 3.25–3.75
                         </div>
 
                         <div class="confidence-wrapper">
                             <div class="confidence-heading">
                                 <span>Assessment confidence</span>
-
-                                <span id="confidenceValue">
-                                    75%
-                                </span>
+                                <span id="confidenceValue">75%</span>
                             </div>
 
                             <div class="bar-track">
-                                <div
-                                    id="confidenceBar"
-                                    class="bar-fill"
-                                    style="width: 75%"
-                                ></div>
+                                <div id="confidenceBar" class="bar-fill" style="width: 75%"></div>
                             </div>
                         </div>
                     </article>
 
                     <article class="result-card">
                         <h3>Skill breakdown</h3>
-
-                        <div
-                            id="categoryResults"
-                            class="category-list"
-                        ></div>
+                        <div id="categoryResults" class="category-list"></div>
                     </article>
                 </div>
 
                 <div class="insight-grid">
                     <article class="result-card">
                         <h3>Your strongest areas</h3>
-
-                        <ul
-                            id="strengthList"
-                            class="insight-list strength-list"
-                        ></ul>
+                        <ul id="strengthList" class="insight-list strength-list"></ul>
                     </article>
 
                     <article class="result-card">
                         <h3>Development priorities</h3>
-
-                        <ul
-                            id="priorityList"
-                            class="insight-list priority-list"
-                        ></ul>
+                        <ul id="priorityList" class="insight-list priority-list"></ul>
                     </article>
                 </div>
 
                 <article class="result-card result-explanation">
                     <h3>What your result means</h3>
-
                     <p id="resultExplanation"></p>
                 </article>
 
+                <section class="training-plan">
+                    <div class="page-heading">
+                        <h2>Recommended practice session</h2>
+                        <p class="section-description">
+                            These drills are selected from your three lowest-scoring categories.
+                        </p>
+                    </div>
+
+                    <div id="drillResults" class="drill-grid"></div>
+                </section>
+
                 <div class="results-actions">
-                    <button
-                        type="button"
-                        class="primary-button"
-                        id="retakeButton"
-                    >
+                    <button type="button" class="primary-button" id="retakeButton">
                         Retake assessment
                     </button>
 
-                    <button
-                        type="button"
-                        class="secondary-button"
-                        id="returnHomeButton"
-                    >
+                    <button type="button" class="secondary-button" id="historyFromResultsButton">
+                        View history
+                    </button>
+
+                    <button type="button" class="secondary-button" id="returnHomeButton">
                         Return home
                     </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="historyPage" class="page-section hidden">
+            <div class="history-wrapper">
+                <div class="page-heading">
+                    <div class="eyebrow">Saved locally on this device</div>
+                    <h1>Assessment history</h1>
+                    <p class="section-description">
+                        Compare previous results and track how your estimated level changes over time.
+                    </p>
+                </div>
+
+                <div id="historyStats" class="stats-grid"></div>
+
+                <div id="historyList" class="history-list"></div>
+
+                <div class="history-actions" style="margin-top: 24px;">
+                    <button type="button" class="primary-button" id="historyStartButton">
+                        Start new assessment
+                    </button>
+
+                    <button type="button" class="danger-button" id="clearHistoryButton">
+                        Clear saved history
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="aboutPage" class="page-section hidden">
+            <div class="about-wrapper">
+                <div class="page-heading">
+                    <div class="eyebrow">How PickleRate works</div>
+                    <h1>About the assessment</h1>
+                    <p class="section-description">
+                        PickleRate is designed to reward repeatable match performance rather than
+                        confidence, knowledge of advanced shots or isolated practice success.
+                    </p>
+                </div>
+
+                <div class="about-grid">
+                    <article class="about-card">
+                        <h3>Evidence-based questions</h3>
+                        <p>
+                            Questions focus on measurable outcomes such as successful drops,
+                            deep returns, controlled dinks, effective resets and competitive rally performance.
+                        </p>
+                    </article>
+
+                    <article class="about-card">
+                        <h3>Weighted categories</h3>
+                        <p>
+                            Consistency, third-shot quality, kitchen play and defensive skills influence
+                            the result more heavily than advanced or flashy attacking shots.
+                        </p>
+                    </article>
+
+                    <article class="about-card">
+                        <h3>Estimated range</h3>
+                        <p>
+                            The website provides a likely range because no self-assessment can identify
+                            an exact competitive rating with perfect accuracy.
+                        </p>
+                    </article>
+
+                    <article class="about-card">
+                        <h3>Saved progress</h3>
+                        <p>
+                            Completed assessments are stored only in your browser using local storage.
+                            No account or server is required for this version.
+                        </p>
+                    </article>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        PickleRate MVP — self-assessment results are estimates only.
+        PickleRate Phase 1 MVP — self-assessment results are estimates only.
     </footer>
 
     <script>
-        /*
-         * Initial Phase 1 question bank.
-         *
-         * Each option has a score from 1 to 5.
-         * Later, we will expand this to approximately 40–60 questions.
-         */
+        const optionSets = {
+            frequency: [
+                { text: "Rarely or almost never", score: 1 },
+                { text: "Occasionally", score: 2 },
+                { text: "About half of the time", score: 3 },
+                { text: "Usually", score: 4 },
+                { text: "Consistently, even under pressure", score: 5 }
+            ],
+            consistency: [
+                { text: "Less than 40%", score: 1 },
+                { text: "About 40–55%", score: 2 },
+                { text: "About 55–70%", score: 3 },
+                { text: "About 70–85%", score: 4 },
+                { text: "More than 85%", score: 5 }
+            ],
+            decision: [
+                { text: "I usually react without a clear plan", score: 1 },
+                { text: "I understand the right choice but often execute the wrong one", score: 2 },
+                { text: "I make a reasonable choice in normal situations", score: 3 },
+                { text: "I usually choose correctly based on the ball and opponent", score: 4 },
+                { text: "I recognise patterns early and adjust before the point develops", score: 5 }
+            ]
+        };
+
         const questions = [
             {
-                id: "serveConsistency",
+                id: "serveIn",
                 category: "Serve and Return",
                 skill: "serveReturn",
-                weight: 1,
-                text:
-                    "During competitive games, how consistently do your serves land in?",
-                help:
-                    "Think about your recent games rather than your best practice session.",
+                weight: 1.0,
+                text: "During competitive games, how consistently do your serves land in?",
+                help: "Use your recent match performance, not your best practice session.",
                 options: [
-                    {
-                        text: "Less than 50% of the time",
-                        score: 1
-                    },
-                    {
-                        text: "About 50–65% of the time",
-                        score: 2
-                    },
-                    {
-                        text: "About 65–80% of the time",
-                        score: 3
-                    },
-                    {
-                        text: "About 80–90% of the time",
-                        score: 4
-                    },
-                    {
-                        text: "More than 90% of the time",
-                        score: 5
-                    }
+                    { text: "Less than 50% of the time", score: 1 },
+                    { text: "About 50–65% of the time", score: 2 },
+                    { text: "About 65–80% of the time", score: 3 },
+                    { text: "About 80–90% of the time", score: 4 },
+                    { text: "More than 90% of the time", score: 5 }
                 ]
+            },
+            {
+                id: "serveDepth",
+                category: "Serve and Return",
+                skill: "serveReturn",
+                weight: 1.0,
+                text: "How often can you serve deep enough to prevent an easy attacking return?",
+                help: "A deep serve should usually land in the final third of the service box.",
+                options: optionSets.frequency
+            },
+            {
+                id: "servePlacement",
+                category: "Serve and Return",
+                skill: "serveReturn",
+                weight: 0.8,
+                text: "How well can you deliberately place your serve to the forehand, backhand or body?",
+                help: "Only count placement you can repeat without greatly increasing your error rate.",
+                options: optionSets.decision
+            },
+            {
+                id: "returnIn",
+                category: "Serve and Return",
+                skill: "serveReturn",
+                weight: 1.2,
+                text: "How consistently do your returns land in during competitive games?",
+                help: "A missed return immediately ends the point, so return consistency matters heavily.",
+                options: optionSets.consistency
             },
             {
                 id: "returnDepth",
                 category: "Serve and Return",
                 skill: "serveReturn",
-                weight: 1.1,
-                text:
-                    "How often can you return serve deep enough to keep your opponents back?",
-                help:
-                    "A deep return should usually land in the final third of the court.",
-                options: [
-                    {
-                        text: "Rarely",
-                        score: 1
-                    },
-                    {
-                        text: "Occasionally, but without control",
-                        score: 2
-                    },
-                    {
-                        text: "About half of the time",
-                        score: 3
-                    },
-                    {
-                        text: "Usually, with reasonable control",
-                        score: 4
-                    },
-                    {
-                        text: "Consistently, while also choosing direction",
-                        score: 5
-                    }
-                ]
+                weight: 1.2,
+                text: "How often can you return deep enough to keep the serving team back?",
+                help: "Think about controlled depth rather than simply hitting hard.",
+                options: optionSets.frequency
             },
             {
-                id: "thirdShot",
+                id: "returnAdvance",
+                category: "Serve and Return",
+                skill: "serveReturn",
+                weight: 1.0,
+                text: "After returning serve, how consistently do you reach the kitchen in a balanced position?",
+                help: "Do not count points where you remain moving or arrive late and off-balance.",
+                options: optionSets.frequency
+            },
+
+            {
+                id: "dropSuccess",
                 category: "Third Shot",
                 skill: "thirdShot",
-                weight: 1.3,
-                text:
-                    "Out of your last 20 third-shot drops in competitive games, approximately how many allowed your team to move forward?",
-                help:
-                    "Count drops that landed safely and made the next ball manageable.",
+                weight: 1.4,
+                text: "Out of your last 20 third-shot drops, approximately how many allowed your team to move forward?",
+                help: "Count drops that landed safely and made the next ball manageable.",
                 options: [
-                    {
-                        text: "0–3 successful drops",
-                        score: 1
-                    },
-                    {
-                        text: "4–7 successful drops",
-                        score: 2
-                    },
-                    {
-                        text: "8–11 successful drops",
-                        score: 3
-                    },
-                    {
-                        text: "12–15 successful drops",
-                        score: 4
-                    },
-                    {
-                        text: "16–20 successful drops",
-                        score: 5
-                    }
+                    { text: "0–3", score: 1 },
+                    { text: "4–7", score: 2 },
+                    { text: "8–11", score: 3 },
+                    { text: "12–15", score: 4 },
+                    { text: "16–20", score: 5 }
                 ]
             },
             {
-                id: "dinkConsistency",
+                id: "dropForehand",
+                category: "Third Shot",
+                skill: "thirdShot",
+                weight: 1.0,
+                text: "How reliable is your forehand third-shot drop under match pressure?",
+                help: "Judge the shot by whether it is unattackable, not only whether it lands in.",
+                options: optionSets.consistency
+            },
+            {
+                id: "dropBackhand",
+                category: "Third Shot",
+                skill: "thirdShot",
+                weight: 1.1,
+                text: "How reliable is your backhand third-shot drop under match pressure?",
+                help: "Include both straight and cross-court situations.",
+                options: optionSets.consistency
+            },
+            {
+                id: "dropAdjustment",
+                category: "Third Shot",
+                skill: "thirdShot",
+                weight: 1.0,
+                text: "How well can you adjust your drop when the return is deep, short, fast or angled?",
+                help: "This measures adaptability rather than one repeatable practice feed.",
+                options: optionSets.decision
+            },
+            {
+                id: "driveSelection",
+                category: "Third Shot",
+                skill: "thirdShot",
+                weight: 0.9,
+                text: "How well do you choose between a third-shot drive and a third-shot drop?",
+                help: "Good selection depends on return height, depth, opponent position and your balance.",
+                options: optionSets.decision
+            },
+            {
+                id: "fifthShot",
+                category: "Third Shot",
+                skill: "thirdShot",
+                weight: 1.1,
+                text: "After a reasonable third-shot drop, how often can you handle the next ball and continue advancing?",
+                help: "This measures whether your team can complete the transition rather than relying on one good drop.",
+                options: optionSets.frequency
+            },
+
+            {
+                id: "dinkCrosscourt",
+                category: "Kitchen Play",
+                skill: "kitchen",
+                weight: 1.1,
+                text: "How many controlled cross-court dinks can you usually maintain before making an unforced error?",
+                help: "Use rallies where the opponent is also moving and applying pressure.",
+                options: [
+                    { text: "Fewer than 3", score: 1 },
+                    { text: "About 3–5", score: 2 },
+                    { text: "About 6–9", score: 3 },
+                    { text: "About 10–14", score: 4 },
+                    { text: "15 or more with purposeful placement", score: 5 }
+                ]
+            },
+            {
+                id: "dinkStraight",
+                category: "Kitchen Play",
+                skill: "kitchen",
+                weight: 0.9,
+                text: "How reliable are your straight-ahead dinks when the middle is tight?",
+                help: "Straight dinks give you less court length and therefore require better control.",
+                options: optionSets.consistency
+            },
+            {
+                id: "dinkPlacement",
                 category: "Kitchen Play",
                 skill: "kitchen",
                 weight: 1.2,
-                text:
-                    "How many controlled cross-court dinks can you usually maintain before making an unforced error?",
-                help:
-                    "Base your answer on rallies where the opponent is also moving and applying pressure.",
-                options: [
-                    {
-                        text: "Fewer than 3",
-                        score: 1
-                    },
-                    {
-                        text: "About 3–5",
-                        score: 2
-                    },
-                    {
-                        text: "About 6–9",
-                        score: 3
-                    },
-                    {
-                        text: "About 10–14",
-                        score: 4
-                    },
-                    {
-                        text: "15 or more with purposeful placement",
-                        score: 5
-                    }
-                ]
+                text: "How often do you intentionally use dink placement to create the next opportunity?",
+                help: "Examples include moving an opponent, targeting a backhand or opening the middle.",
+                options: optionSets.decision
             },
             {
-                id: "dinkSelection",
+                id: "dinkPressure",
                 category: "Kitchen Play",
                 skill: "kitchen",
-                weight: 1,
-                text:
-                    "When dinking, how often do you intentionally move the ball to create a difficult next shot?",
-                help:
-                    "Examples include targeting the sideline, middle, backhand or an opponent's movement.",
-                options: [
-                    {
-                        text: "I mainly try to keep the ball in play",
-                        score: 1
-                    },
-                    {
-                        text: "I sometimes aim, but without a clear pattern",
-                        score: 2
-                    },
-                    {
-                        text: "I use placement in some rallies",
-                        score: 3
-                    },
-                    {
-                        text: "I regularly use placement to create opportunities",
-                        score: 4
-                    },
-                    {
-                        text: "I build patterns and adjust to opponents",
-                        score: 5
-                    }
-                ]
+                weight: 1.2,
+                text: "How well do your dinks hold up during faster or more competitive kitchen exchanges?",
+                help: "Think about games where opponents pressure your contact point or change direction.",
+                options: optionSets.consistency
             },
+            {
+                id: "lowBallPatience",
+                category: "Kitchen Play",
+                skill: "kitchen",
+                weight: 1.0,
+                text: "When the ball is below net height, how consistently do you avoid a low-percentage attack?",
+                help: "This measures patience and disciplined shot selection.",
+                options: optionSets.frequency
+            },
+            {
+                id: "kitchenMovement",
+                category: "Kitchen Play",
+                skill: "kitchen",
+                weight: 1.0,
+                text: "How well do you maintain balance and kitchen-line position while reaching for wide dinks?",
+                help: "Consider recovery after the shot, not only whether you contact the ball.",
+                options: optionSets.frequency
+            },
+
             {
                 id: "transitionReset",
                 category: "Resets and Defence",
                 skill: "defence",
-                weight: 1.4,
-                text:
-                    "You receive a low ball while moving through the transition zone. What usually happens?",
-                help:
-                    "Think about balls below net height while you are between the baseline and kitchen.",
+                weight: 1.5,
+                text: "You receive a low ball while moving through the transition zone. What usually happens?",
+                help: "Think about balls below net height between the baseline and kitchen.",
                 options: [
-                    {
-                        text: "I usually drive it hard or make an error",
-                        score: 1
-                    },
-                    {
-                        text: "I attempt a reset, but it is often attackable",
-                        score: 2
-                    },
-                    {
-                        text: "I can reset some balls when I have time",
-                        score: 3
-                    },
-                    {
-                        text: "I regularly reset difficult balls into the kitchen",
-                        score: 4
-                    },
-                    {
-                        text: "I consistently select and execute the correct defensive response",
-                        score: 5
-                    }
+                    { text: "I usually drive it hard or make an error", score: 1 },
+                    { text: "I attempt a reset, but it is often attackable", score: 2 },
+                    { text: "I can reset some balls when I have time", score: 3 },
+                    { text: "I regularly reset difficult balls into the kitchen", score: 4 },
+                    { text: "I consistently select and execute the correct defensive response", score: 5 }
                 ]
             },
             {
-                id: "blocking",
+                id: "blockDrive",
+                category: "Resets and Defence",
+                skill: "defence",
+                weight: 1.3,
+                text: "How effectively can you block hard drives while positioned at the kitchen?",
+                help: "A successful block should stay low and prevent an immediate follow-up attack.",
+                options: optionSets.consistency
+            },
+            {
+                id: "backhandBlock",
                 category: "Resets and Defence",
                 skill: "defence",
                 weight: 1.2,
-                text:
-                    "How effectively can you block hard drives while positioned at the kitchen?",
-                help:
-                    "A successful block should stay low and prevent an immediate follow-up attack.",
-                options: [
-                    {
-                        text: "I frequently miss or pop the ball up",
-                        score: 1
-                    },
-                    {
-                        text: "I return some drives, but without control",
-                        score: 2
-                    },
-                    {
-                        text: "I block average drives reasonably well",
-                        score: 3
-                    },
-                    {
-                        text: "I control most drives and redirect some of them",
-                        score: 4
-                    },
-                    {
-                        text: "I consistently neutralise pace and choose blocks or counters",
-                        score: 5
-                    }
-                ]
+                text: "How reliable is your backhand block against pace directed at your body or backhand side?",
+                help: "Use competitive exchanges rather than cooperative drills.",
+                options: optionSets.consistency
             },
+            {
+                id: "resetAfterPop",
+                category: "Resets and Defence",
+                skill: "defence",
+                weight: 1.1,
+                text: "After your team pops a ball up, how often can you defend the next attack and stay in the point?",
+                help: "This measures recovery when your team is already under pressure.",
+                options: optionSets.frequency
+            },
+            {
+                id: "defensiveLob",
+                category: "Resets and Defence",
+                skill: "defence",
+                weight: 0.6,
+                text: "How effectively can you use a defensive lob when both opponents are leaning forward?",
+                help: "Do not count emergency lobs that are usually smashed.",
+                options: optionSets.frequency
+            },
+            {
+                id: "handsRecovery",
+                category: "Resets and Defence",
+                skill: "defence",
+                weight: 1.0,
+                text: "During a fast hands exchange, how often can you recover after the first difficult ball?",
+                help: "Good defence often requires more than one controlled contact.",
+                options: optionSets.frequency
+            },
+
             {
                 id: "speedupSelection",
                 category: "Attack and Counter",
                 skill: "attack",
-                weight: 1,
-                text:
-                    "How do you decide when to speed up the ball from the kitchen?",
-                help:
-                    "Good speed-ups are based on ball height, opponent position and expected counter.",
-                options: [
-                    {
-                        text: "I attack whenever I see an opportunity to hit hard",
-                        score: 1
-                    },
-                    {
-                        text: "I sometimes attack balls that are too low",
-                        score: 2
-                    },
-                    {
-                        text: "I mainly attack clearly high balls",
-                        score: 3
-                    },
-                    {
-                        text: "I recognise several attackable patterns",
-                        score: 4
-                    },
-                    {
-                        text: "I disguise attacks and plan for the opponent's counter",
-                        score: 5
-                    }
-                ]
+                weight: 1.2,
+                text: "How well do you decide when to speed up the ball from the kitchen?",
+                help: "Good speed-ups are based on ball height, disguise and expected counter.",
+                options: optionSets.decision
             },
             {
-                id: "positioning",
-                category: "Strategy",
+                id: "speedupExecution",
+                category: "Attack and Counter",
+                skill: "attack",
+                weight: 1.0,
+                text: "How often does your speed-up create an advantage without going out, into the net or directly to an opponent's counter?",
+                help: "Count successful pressure, not only clean winners.",
+                options: optionSets.consistency
+            },
+            {
+                id: "counterForehand",
+                category: "Attack and Counter",
+                skill: "attack",
+                weight: 1.0,
+                text: "How reliable is your forehand counter during fast exchanges?",
+                help: "A good counter should be compact and controlled rather than a full swing.",
+                options: optionSets.consistency
+            },
+            {
+                id: "counterBackhand",
+                category: "Attack and Counter",
+                skill: "attack",
+                weight: 1.2,
+                text: "How reliable is your backhand counter during fast exchanges?",
+                help: "This includes balls directed at the body and dominant-side hip.",
+                options: optionSets.consistency
+            },
+            {
+                id: "attackTargets",
+                category: "Attack and Counter",
+                skill: "attack",
+                weight: 0.9,
+                text: "How deliberately do you choose attack targets such as the body, dominant hip, middle or open space?",
+                help: "Intentional targets usually create more repeatable pressure than hitting hard at random.",
+                options: optionSets.decision
+            },
+
+            {
+                id: "partnerMovement",
+                category: "Strategy and Positioning",
+                skill: "strategy",
+                weight: 1.2,
+                text: "How consistently do you move with your partner and avoid leaving large gaps?",
+                help: "Consider side-to-side movement, transition movement and middle coverage.",
+                options: optionSets.frequency
+            },
+            {
+                id: "middleCoverage",
+                category: "Strategy and Positioning",
+                skill: "strategy",
+                weight: 1.0,
+                text: "How well do you and your partner protect the middle without both reaching for the same ball?",
+                help: "Good middle coverage requires spacing, communication and role awareness.",
+                options: optionSets.frequency
+            },
+            {
+                id: "targeting",
+                category: "Strategy and Positioning",
                 skill: "strategy",
                 weight: 1.1,
-                text:
-                    "How consistently do you maintain effective court position with your partner?",
-                help:
-                    "Consider moving together, protecting the middle and avoiding unnecessary gaps.",
+                text: "How effectively do you identify and use an opponent's weaker movement, wing or pattern?",
+                help: "This includes adjusting when an opponent begins protecting the weakness.",
+                options: optionSets.decision
+            },
+            {
+                id: "patternRecognition",
+                category: "Strategy and Positioning",
+                skill: "strategy",
+                weight: 1.2,
+                text: "How quickly do you recognise repeated opponent patterns during a match?",
+                help: "Examples include predictable speed-ups, weak backhand dinks or poor movement after wide balls.",
+                options: optionSets.decision
+            },
+            {
+                id: "shotTolerance",
+                category: "Strategy and Positioning",
+                skill: "strategy",
+                weight: 1.0,
+                text: "How well can you stay patient when a point requires several neutral shots before an opportunity appears?",
+                help: "This measures point construction rather than passive play.",
+                options: optionSets.frequency
+            },
+
+            {
+                id: "rallyConsistency",
+                category: "Consistency and Pressure",
+                skill: "consistency",
+                weight: 1.4,
+                text: "In close games, how often do your normal shots remain as reliable as they are early in the game?",
+                help: "Think about scores such as 8–8, 9–9 or tournament elimination games.",
+                options: optionSets.frequency
+            },
+            {
+                id: "unforcedErrors",
+                category: "Consistency and Pressure",
+                skill: "consistency",
+                weight: 1.5,
+                text: "How often do unforced errors end points before your opponents create real pressure?",
+                help: "Lower error frequency should receive a higher score.",
                 options: [
-                    {
-                        text: "I often lose track of my position",
-                        score: 1
-                    },
-                    {
-                        text: "I understand positioning but react late",
-                        score: 2
-                    },
-                    {
-                        text: "My positioning is generally correct",
-                        score: 3
-                    },
-                    {
-                        text: "I move well with my partner and close most gaps",
-                        score: 4
-                    },
-                    {
-                        text: "I adjust positioning based on patterns and opponent tendencies",
-                        score: 5
-                    }
+                    { text: "Very often", score: 1 },
+                    { text: "Often", score: 2 },
+                    { text: "Sometimes", score: 3 },
+                    { text: "Rarely", score: 4 },
+                    { text: "Very rarely, even under pressure", score: 5 }
                 ]
             },
             {
-                id: "matchPerformance",
+                id: "badDayFloor",
+                category: "Consistency and Pressure",
+                skill: "consistency",
+                weight: 1.3,
+                text: "On a poor playing day, how much of your normal game remains reliable?",
+                help: "Strong players usually have a higher performance floor even when timing is imperfect.",
+                options: [
+                    { text: "Very little; my whole game often falls apart", score: 1 },
+                    { text: "Some basic shots remain, but errors increase sharply", score: 2 },
+                    { text: "About half of my normal game remains dependable", score: 3 },
+                    { text: "Most core skills remain usable", score: 4 },
+                    { text: "My level drops only slightly", score: 5 }
+                ]
+            },
+            {
+                id: "adaptPressure",
+                category: "Consistency and Pressure",
+                skill: "consistency",
+                weight: 1.1,
+                text: "After making several errors with the same shot, how effectively do you adjust during the game?",
+                help: "Adjustment may include changing target, pace, margin or shot selection.",
+                options: optionSets.decision
+            },
+
+            {
+                id: "versus35",
+                category: "Competitive Performance",
+                skill: "performance",
+                weight: 1.1,
+                text: "Against established 3.5-level players, how often are you competitive throughout the match?",
+                help: "Consider your own contribution rather than only the final score.",
+                options: [
+                    { text: "Rarely", score: 1 },
+                    { text: "I can compete in parts of games", score: 2 },
+                    { text: "Matches are usually competitive", score: 3 },
+                    { text: "I often control important parts of the match", score: 4 },
+                    { text: "I consistently perform above this level", score: 5 }
+                ]
+            },
+            {
+                id: "versus40",
                 category: "Competitive Performance",
                 skill: "performance",
                 weight: 1.4,
-                text:
-                    "Against established 4.0-level players, how often can you remain competitive during neutral rallies?",
-                help:
-                    "Do not count points won only because of a partner's winner or an opponent's easy mistake.",
+                text: "Against established 4.0-level players, how often can you remain competitive during neutral rallies?",
+                help: "Do not count points won only because of a partner's winner or an easy opponent error.",
                 options: [
-                    {
-                        text: "Rarely",
-                        score: 1
-                    },
-                    {
-                        text: "About 20–30% of the time",
-                        score: 2
-                    },
-                    {
-                        text: "About 40–50% of the time",
-                        score: 3
-                    },
-                    {
-                        text: "About 60–75% of the time",
-                        score: 4
-                    },
-                    {
-                        text: "Most of the time",
-                        score: 5
-                    }
+                    { text: "Rarely", score: 1 },
+                    { text: "About 20–30% of the time", score: 2 },
+                    { text: "About 40–50% of the time", score: 3 },
+                    { text: "About 60–75% of the time", score: 4 },
+                    { text: "Most of the time", score: 5 }
+                ]
+            },
+            {
+                id: "strongPartner",
+                category: "Competitive Performance",
+                skill: "performance",
+                weight: 0.9,
+                text: "When partnered with a stronger player, how much do you contribute rather than relying on them to cover the court?",
+                help: "Consider returns, transitions, neutral rallies, defence and point construction.",
+                options: [
+                    { text: "My partner usually carries most points", score: 1 },
+                    { text: "I contribute occasionally but am targeted heavily", score: 2 },
+                    { text: "I hold my side in normal rallies", score: 3 },
+                    { text: "I contribute consistently and create opportunities", score: 4 },
+                    { text: "I perform as an equal partner against strong opposition", score: 5 }
+                ]
+            },
+            {
+                id: "newPartner",
+                category: "Competitive Performance",
+                skill: "performance",
+                weight: 0.9,
+                text: "How well does your game transfer when playing with an unfamiliar partner?",
+                help: "This measures adaptability, communication and independence from rehearsed patterns.",
+                options: optionSets.frequency
+            },
+            {
+                id: "tournamentTransfer",
+                category: "Competitive Performance",
+                skill: "performance",
+                weight: 1.2,
+                text: "How closely does your tournament performance match your normal recreational performance?",
+                help: "If you have not played tournaments, use organised competitive games with pressure.",
+                options: [
+                    { text: "My level drops dramatically", score: 1 },
+                    { text: "My level usually drops noticeably", score: 2 },
+                    { text: "I perform somewhat below normal", score: 3 },
+                    { text: "I perform close to my normal level", score: 4 },
+                    { text: "I often perform better under pressure", score: 5 }
                 ]
             }
         ];
 
-        /*
-         * Each category has a different influence on the overall rating.
-         * These will be refined after the question bank is expanded.
-         */
         const categoryWeights = {
             serveReturn: 0.12,
-            thirdShot: 0.17,
-            kitchen: 0.17,
-            defence: 0.20,
-            attack: 0.10,
-            strategy: 0.11,
-            performance: 0.13
+            thirdShot: 0.16,
+            kitchen: 0.16,
+            defence: 0.18,
+            attack: 0.09,
+            strategy: 0.10,
+            consistency: 0.11,
+            performance: 0.08
         };
 
         const categoryNames = {
@@ -1418,30 +1599,70 @@
             defence: "Resets and defence",
             attack: "Attack and counter",
             strategy: "Strategy and positioning",
+            consistency: "Consistency under pressure",
             performance: "Competitive performance"
         };
 
         const categoryDescriptions = {
-            serveReturn:
-                "Your ability to begin points consistently and create positional advantages.",
+            serveReturn: "starting points reliably and creating positional advantages",
+            thirdShot: "using the third and fifth shot to reach the kitchen",
+            kitchen: "maintaining control, placement and patience at the kitchen",
+            defence: "blocking pace, resetting and surviving pressure",
+            attack: "choosing and executing speed-ups and counters",
+            strategy: "positioning, pattern recognition and shot selection",
+            consistency: "maintaining a dependable level when pressure increases",
+            performance: "transferring technical ability into competitive games"
+        };
 
-            thirdShot:
-                "Your ability to use the third shot to advance toward the kitchen.",
-
-            kitchen:
-                "Your consistency, placement and patience during kitchen exchanges.",
-
-            defence:
-                "Your ability to neutralise attacks, reset the ball and survive transition.",
-
-            attack:
-                "Your shot selection when speeding up, attacking and countering.",
-
-            strategy:
-                "Your positioning, pattern recognition and decision-making.",
-
-            performance:
-                "How well your skills transfer into competitive rallies against stronger players."
+        const drillLibrary = {
+            serveReturn: {
+                title: "Deep serve and return targets",
+                time: "20 minutes",
+                description:
+                    "Place three targets in the final third of the service boxes. Alternate serves and returns, recording how many of 20 land deep without missing."
+            },
+            thirdShot: {
+                title: "Third-shot plus fifth-shot progression",
+                time: "30 minutes",
+                description:
+                    "Hit a third-shot drop, move forward, then play the fifth ball. Score the repetition only when both shots remain unattackable."
+            },
+            kitchen: {
+                title: "Dink placement ladder",
+                time: "25 minutes",
+                description:
+                    "Start with ten neutral dinks, then target wide, middle and backhand zones. Restart whenever the ball becomes attackable."
+            },
+            defence: {
+                title: "Transition reset and block drill",
+                time: "30 minutes",
+                description:
+                    "Begin in the transition zone while a partner applies controlled pressure. Reset three balls before advancing, then finish with compact kitchen blocks."
+            },
+            attack: {
+                title: "Speed-up and counter patterns",
+                time: "20 minutes",
+                description:
+                    "Practise one disguised speed-up followed by the expected counter. Focus on compact preparation and deliberate body or middle targets."
+            },
+            strategy: {
+                title: "Pattern-based conditioned games",
+                time: "25 minutes",
+                description:
+                    "Play half-court or full-court games with one tactical goal, such as moving the opponent wide before attacking the middle."
+            },
+            consistency: {
+                title: "Pressure scoring challenge",
+                time: "20 minutes",
+                description:
+                    "Complete a skill target at 8–8 scoring. Restart the sequence after an unforced error to practise maintaining technique under consequence."
+            },
+            performance: {
+                title: "Structured competitive review",
+                time: "30 minutes",
+                description:
+                    "Play games against slightly stronger opponents and record rally outcomes, missed patterns and which skills break down first."
+            }
         };
 
         const state = {
@@ -1449,60 +1670,34 @@
             answers: {}
         };
 
-        const homePage =
-            document.getElementById("homePage");
+        const pages = {
+            home: document.getElementById("homePage"),
+            assessment: document.getElementById("assessmentPage"),
+            results: document.getElementById("resultsPage"),
+            history: document.getElementById("historyPage"),
+            about: document.getElementById("aboutPage")
+        };
 
-        const assessmentPage =
-            document.getElementById("assessmentPage");
-
-        const resultsPage =
-            document.getElementById("resultsPage");
-
-        const questionCounter =
-            document.getElementById("questionCounter");
-
-        const progressPercentage =
-            document.getElementById("progressPercentage");
-
-        const progressFill =
-            document.getElementById("progressFill");
-
-        const questionCategory =
-            document.getElementById("questionCategory");
-
-        const questionText =
-            document.getElementById("questionText");
-
-        const questionHelp =
-            document.getElementById("questionHelp");
-
-        const answerOptions =
-            document.getElementById("answerOptions");
-
-        const validationMessage =
-            document.getElementById("validationMessage");
-
-        const previousButton =
-            document.getElementById("previousButton");
-
-        const nextButton =
-            document.getElementById("nextButton");
+        const questionCounter = document.getElementById("questionCounter");
+        const progressPercentage = document.getElementById("progressPercentage");
+        const progressFill = document.getElementById("progressFill");
+        const questionCategory = document.getElementById("questionCategory");
+        const questionText = document.getElementById("questionText");
+        const questionHelp = document.getElementById("questionHelp");
+        const answerOptions = document.getElementById("answerOptions");
+        const validationMessage = document.getElementById("validationMessage");
+        const previousButton = document.getElementById("previousButton");
+        const nextButton = document.getElementById("nextButton");
 
         function showPage(pageName) {
-            homePage.classList.add("hidden");
-            assessmentPage.classList.add("hidden");
-            resultsPage.classList.add("hidden");
+            Object.values(pages).forEach(page => page.classList.add("hidden"));
 
-            if (pageName === "home") {
-                homePage.classList.remove("hidden");
+            if (pages[pageName]) {
+                pages[pageName].classList.remove("hidden");
             }
 
-            if (pageName === "assessment") {
-                assessmentPage.classList.remove("hidden");
-            }
-
-            if (pageName === "results") {
-                resultsPage.classList.remove("hidden");
+            if (pageName === "history") {
+                renderHistory();
             }
 
             window.scrollTo({
@@ -1514,77 +1709,44 @@
         function startAssessment() {
             state.currentQuestionIndex = 0;
             state.answers = {};
-
             renderQuestion();
             showPage("assessment");
         }
 
         function renderQuestion() {
-            const question =
-                questions[state.currentQuestionIndex];
+            const question = questions[state.currentQuestionIndex];
+            const questionNumber = state.currentQuestionIndex + 1;
+            const progress = Math.round((questionNumber / questions.length) * 100);
 
-            const questionNumber =
-                state.currentQuestionIndex + 1;
-
-            const progress =
-                Math.round(
-                    (questionNumber / questions.length) * 100
-                );
-
-            questionCounter.textContent =
-                `Question ${questionNumber} of ${questions.length}`;
-
-            progressPercentage.textContent =
-                `${progress}%`;
-
-            progressFill.style.width =
-                `${progress}%`;
-
-            questionCategory.textContent =
-                question.category;
-
-            questionText.textContent =
-                question.text;
-
-            questionHelp.textContent =
-                question.help;
-
+            questionCounter.textContent = `Question ${questionNumber} of ${questions.length}`;
+            progressPercentage.textContent = `${progress}%`;
+            progressFill.style.width = `${progress}%`;
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.text;
+            questionHelp.textContent = question.help;
             validationMessage.textContent = "";
             answerOptions.innerHTML = "";
 
             question.options.forEach((option, index) => {
-                const wrapper =
-                    document.createElement("div");
+                const wrapper = document.createElement("div");
+                wrapper.className = "answer-option";
 
-                wrapper.className =
-                    "answer-option";
-
-                const input =
-                    document.createElement("input");
-
+                const input = document.createElement("input");
                 input.type = "radio";
                 input.name = "questionAnswer";
-                input.id =
-                    `answer-${question.id}-${index}`;
-
+                input.id = `answer-${question.id}-${index}`;
                 input.value = option.score;
 
-                if (
-                    state.answers[question.id] === option.score
-                ) {
+                if (state.answers[question.id] === option.score) {
                     input.checked = true;
                 }
 
                 input.addEventListener("change", () => {
-                    state.answers[question.id] =
-                        option.score;
-
+                    state.answers[question.id] = option.score;
                     validationMessage.textContent = "";
                 });
 
-                const label =
-                    document.createElement("label");
-
+                const label = document.createElement("label");
                 label.htmlFor = input.id;
                 label.textContent = option.text;
 
@@ -1593,38 +1755,24 @@
                 answerOptions.appendChild(wrapper);
             });
 
-            previousButton.disabled =
-                state.currentQuestionIndex === 0;
-
-            previousButton.style.opacity =
-                state.currentQuestionIndex === 0
-                    ? "0.45"
-                    : "1";
+            previousButton.disabled = state.currentQuestionIndex === 0;
+            previousButton.style.opacity = state.currentQuestionIndex === 0 ? "0.45" : "1";
 
             nextButton.textContent =
-                state.currentQuestionIndex ===
-                questions.length - 1
+                state.currentQuestionIndex === questions.length - 1
                     ? "View results"
                     : "Next";
         }
 
         function goToNextQuestion() {
-            const question =
-                questions[state.currentQuestionIndex];
+            const question = questions[state.currentQuestionIndex];
 
-            if (
-                state.answers[question.id] === undefined
-            ) {
-                validationMessage.textContent =
-                    "Please select an answer before continuing.";
-
+            if (state.answers[question.id] === undefined) {
+                validationMessage.textContent = "Please select an answer before continuing.";
                 return;
             }
 
-            if (
-                state.currentQuestionIndex <
-                questions.length - 1
-            ) {
+            if (state.currentQuestionIndex < questions.length - 1) {
                 state.currentQuestionIndex += 1;
                 renderQuestion();
                 return;
@@ -1643,129 +1791,88 @@
         }
 
         function calculateCategoryScores() {
-            const categoryTotals = {};
-            const categoryWeightTotals = {};
+            const totals = {};
+            const weightTotals = {};
 
-            questions.forEach((question) => {
-                const answer =
-                    state.answers[question.id];
+            questions.forEach(question => {
+                const answer = state.answers[question.id];
 
                 if (answer === undefined) {
                     return;
                 }
 
-                if (!categoryTotals[question.skill]) {
-                    categoryTotals[question.skill] = 0;
-                    categoryWeightTotals[question.skill] = 0;
+                if (!totals[question.skill]) {
+                    totals[question.skill] = 0;
+                    weightTotals[question.skill] = 0;
                 }
 
-                categoryTotals[question.skill] +=
-                    answer * question.weight;
-
-                categoryWeightTotals[question.skill] +=
-                    question.weight;
+                totals[question.skill] += answer * question.weight;
+                weightTotals[question.skill] += question.weight;
             });
 
-            const categoryScores = {};
+            const scores = {};
 
-            Object.keys(categoryTotals).forEach(
-                (category) => {
-                    categoryScores[category] =
-                        categoryTotals[category] /
-                        categoryWeightTotals[category];
-                }
-            );
+            Object.keys(totals).forEach(category => {
+                scores[category] = totals[category] / weightTotals[category];
+            });
 
-            return categoryScores;
+            return scores;
         }
 
         function calculateOverallScore(categoryScores) {
             let weightedTotal = 0;
             let totalWeight = 0;
 
-            Object.entries(categoryWeights).forEach(
-                ([category, weight]) => {
-                    if (
-                        categoryScores[category] === undefined
-                    ) {
-                        return;
-                    }
-
-                    weightedTotal +=
-                        categoryScores[category] * weight;
-
-                    totalWeight += weight;
+            Object.entries(categoryWeights).forEach(([category, weight]) => {
+                if (categoryScores[category] === undefined) {
+                    return;
                 }
-            );
 
-            if (totalWeight === 0) {
-                return 1;
-            }
+                weightedTotal += categoryScores[category] * weight;
+                totalWeight += weight;
+            });
 
-            return weightedTotal / totalWeight;
+            return totalWeight === 0 ? 1 : weightedTotal / totalWeight;
         }
 
-        /*
-         * Converts the internal 1–5 assessment score
-         * into an estimated pickleball rating.
-         *
-         * Internal score 1 approximately maps to 2.0.
-         * Internal score 5 approximately maps to 4.75.
-         */
         function convertScoreToRating(score) {
-            const minimumRating = 2.0;
-            const maximumRating = 4.75;
+            const points = [
+                { score: 1.0, rating: 2.0 },
+                { score: 1.7, rating: 2.5 },
+                { score: 2.4, rating: 3.0 },
+                { score: 3.1, rating: 3.5 },
+                { score: 3.85, rating: 4.0 },
+                { score: 4.45, rating: 4.5 },
+                { score: 5.0, rating: 4.9 }
+            ];
 
-            const normalised =
-                (score - 1) / 4;
+            for (let index = 0; index < points.length - 1; index += 1) {
+                const current = points[index];
+                const next = points[index + 1];
 
-            const rating =
-                minimumRating +
-                normalised *
-                    (maximumRating - minimumRating);
+                if (score >= current.score && score <= next.score) {
+                    const progress = (score - current.score) / (next.score - current.score);
+                    return current.rating + progress * (next.rating - current.rating);
+                }
+            }
 
-            return Math.min(
-                maximumRating,
-                Math.max(minimumRating, rating)
-            );
+            return score < 1 ? 2.0 : 4.9;
         }
 
         function getRatingLabel(rating) {
-            if (rating < 2.5) {
-                return "Beginner player";
-            }
-
-            if (rating < 3.0) {
-                return "Developing 2.5";
-            }
-
-            if (rating < 3.5) {
-                return "Developing 3.0";
-            }
-
-            if (rating < 4.0) {
-                return "Competitive 3.5";
-            }
-
-            if (rating < 4.5) {
-                return "Advanced 4.0";
-            }
-
+            if (rating < 2.5) return "Beginner player";
+            if (rating < 3.0) return "Developing 2.5";
+            if (rating < 3.5) return "Competitive 3.0";
+            if (rating < 4.0) return "Competitive 3.5";
+            if (rating < 4.5) return "Advanced 4.0";
             return "Advanced 4.5+";
         }
 
-        function getRatingRange(rating) {
-            const lower =
-                Math.max(
-                    2,
-                    Math.floor((rating - 0.2) * 4) / 4
-                );
+        function getRatingRange(rating, confidence) {
+            const spread = confidence >= 86 ? 0.18 : confidence >= 78 ? 0.25 : 0.32;
 
-            const upper =
-                Math.min(
-                    5,
-                    Math.ceil((rating + 0.2) * 4) / 4
-                );
+            const lower = Math.max(2.0, Math.floor((rating - spread) * 4) / 4);
+            const upper = Math.min(5.0, Math.ceil((rating + spread) * 4) / 4);
 
             return {
                 lower: lower.toFixed(2),
@@ -1773,94 +1880,40 @@
             };
         }
 
-        function calculateConfidence(
-            categoryScores
-        ) {
-            const values =
-                Object.values(categoryScores);
-
-            if (values.length === 0) {
-                return 50;
-            }
-
-            const average =
-                values.reduce(
-                    (total, value) =>
-                        total + value,
-                    0
-                ) / values.length;
+        function calculateConfidence(categoryScores) {
+            const values = Object.values(categoryScores);
+            const average = values.reduce((total, value) => total + value, 0) / values.length;
 
             const variance =
                 values.reduce(
-                    (total, value) =>
-                        total +
-                        Math.pow(value - average, 2),
+                    (total, value) => total + Math.pow(value - average, 2),
                     0
                 ) / values.length;
 
-            const standardDeviation =
-                Math.sqrt(variance);
+            const standardDeviation = Math.sqrt(variance);
+            const completionBonus = Math.min(8, Math.round(questions.length / 6));
+            const confidence = Math.round(86 + completionBonus - standardDeviation * 11);
 
-            /*
-             * A balanced profile gives slightly higher confidence.
-             * The limited Phase 1 question count prevents confidence
-             * from being displayed above 85%.
-             */
-            const confidence =
-                Math.round(
-                    85 - standardDeviation * 10
-                );
-
-            return Math.min(
-                85,
-                Math.max(62, confidence)
-            );
+            return Math.min(92, Math.max(68, confidence));
         }
 
-        function displayCategoryResults(
-            categoryScores
-        ) {
-            const container =
-                document.getElementById(
-                    "categoryResults"
-                );
-
+        function displayCategoryResults(categoryScores) {
+            const container = document.getElementById("categoryResults");
             container.innerHTML = "";
 
             Object.entries(categoryScores)
-                .sort(
-                    (first, second) =>
-                        second[1] - first[1]
-                )
+                .sort((a, b) => b[1] - a[1])
                 .forEach(([category, score]) => {
-                    const percentage =
-                        Math.round(
-                            ((score - 1) / 4) * 100
-                        );
-
-                    const row =
-                        document.createElement("div");
+                    const percentage = Math.round(((score - 1) / 4) * 100);
+                    const row = document.createElement("div");
 
                     row.innerHTML = `
                         <div class="category-row-heading">
-                            <span>
-                                ${categoryNames[category]}
-                            </span>
-
-                            <span class="category-score">
-                                ${score.toFixed(1)} / 5
-                            </span>
+                            <span>${categoryNames[category]}</span>
+                            <span class="category-score">${score.toFixed(1)} / 5</span>
                         </div>
-
                         <div class="bar-track">
-                            <div
-                                class="bar-fill"
-                                style="width:
-                                    ${Math.max(
-                                        5,
-                                        percentage
-                                    )}%"
-                            ></div>
+                            <div class="bar-fill" style="width: ${Math.max(5, percentage)}%"></div>
                         </div>
                     `;
 
@@ -1869,263 +1922,235 @@
         }
 
         function displayInsights(categoryScores) {
-            const sortedCategories =
-                Object.entries(categoryScores).sort(
-                    (first, second) =>
-                        second[1] - first[1]
-                );
+            const sorted = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
+            const strengths = sorted.slice(0, 3);
+            const priorities = [...sorted].reverse().slice(0, 3);
 
-            const strengths =
-                sortedCategories.slice(0, 3);
-
-            const priorities =
-                [...sortedCategories]
-                    .reverse()
-                    .slice(0, 3);
-
-            const strengthList =
-                document.getElementById(
-                    "strengthList"
-                );
-
-            const priorityList =
-                document.getElementById(
-                    "priorityList"
-                );
+            const strengthList = document.getElementById("strengthList");
+            const priorityList = document.getElementById("priorityList");
 
             strengthList.innerHTML = "";
             priorityList.innerHTML = "";
 
             strengths.forEach(([category]) => {
-                const item =
-                    document.createElement("li");
-
+                const item = document.createElement("li");
                 item.textContent =
-                    `${categoryNames[category]}: ` +
-                    categoryDescriptions[category];
-
+                    `${categoryNames[category]}: you currently show your strongest evidence in ` +
+                    `${categoryDescriptions[category]}.`;
                 strengthList.appendChild(item);
             });
 
             priorities.forEach(([category]) => {
-                const item =
-                    document.createElement("li");
-
+                const item = document.createElement("li");
                 item.textContent =
-                    `${categoryNames[category]}: ` +
-                    getPriorityRecommendation(category);
-
+                    `${categoryNames[category]}: improving this area is likely to produce one of ` +
+                    `the largest immediate gains in your overall level.`;
                 priorityList.appendChild(item);
+            });
+
+            displayDrills(priorities);
+        }
+
+        function displayDrills(priorities) {
+            const container = document.getElementById("drillResults");
+            container.innerHTML = "";
+
+            priorities.forEach(([category]) => {
+                const drill = drillLibrary[category];
+                const card = document.createElement("article");
+                card.className = "drill-card";
+
+                card.innerHTML = `
+                    <span class="drill-time">${drill.time}</span>
+                    <h4>${drill.title}</h4>
+                    <p>${drill.description}</p>
+                `;
+
+                container.appendChild(card);
             });
         }
 
-        function getPriorityRecommendation(category) {
-            const recommendations = {
-                serveReturn:
-                    "Practise deep serves and returns while measuring successful targets.",
-
-                thirdShot:
-                    "Use repeatable third-shot drop drills from both forehand and backhand sides.",
-
-                kitchen:
-                    "Build longer dink rallies before adding placement and attack patterns.",
-
-                defence:
-                    "Prioritise transition resets, compact blocks and lowering attackable pop-ups.",
-
-                attack:
-                    "Practise recognising attackable balls and preparing for the counter.",
-
-                strategy:
-                    "Work on partner movement, middle coverage and deliberate point construction.",
-
-                performance:
-                    "Play structured games against stronger opponents and record repeatable rally outcomes."
-            };
-
-            return recommendations[category];
-        }
-
-        function createExplanation(
-            rating,
-            categoryScores
-        ) {
-            const sorted =
-                Object.entries(categoryScores).sort(
-                    (first, second) =>
-                        second[1] - first[1]
-                );
-
-            const strongest =
-                categoryNames[sorted[0][0]];
-
-            const weakest =
-                categoryNames[
-                    sorted[sorted.length - 1][0]
-                ];
+        function createExplanation(rating, categoryScores) {
+            const sorted = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
+            const strongest = categoryNames[sorted[0][0]];
+            const weakest = categoryNames[sorted[sorted.length - 1][0]];
 
             let levelExplanation = "";
 
             if (rating < 3.0) {
                 levelExplanation =
-                    "Your answers suggest that you are still building reliable control and repeatable rally skills.";
+                    "Your answers suggest that you are still building reliable ball control and repeatable rally skills.";
             } else if (rating < 3.5) {
                 levelExplanation =
-                    "Your answers suggest that you can sustain structured points, but your execution may still vary under pressure.";
+                    "Your answers suggest that you can sustain more structured points, but execution still varies when pace or pressure increases.";
             } else if (rating < 4.0) {
                 levelExplanation =
-                    "Your answers show several skills associated with competitive 3.5 play, including better shot selection and more purposeful rally construction.";
+                    "Your answers show several skills associated with competitive 3.5 play, including more purposeful shot selection and stronger point construction.";
             } else if (rating < 4.5) {
                 levelExplanation =
-                    "Your answers suggest strong control, tactical awareness and the ability to compete during faster, more demanding exchanges.";
+                    "Your answers suggest strong control, tactical awareness and the ability to remain effective during faster and more demanding exchanges.";
             } else {
                 levelExplanation =
                     "Your answers indicate advanced consistency, tactical flexibility and strong performance against skilled opposition.";
             }
 
             return (
-                `${levelExplanation} ` +
-                `Your strongest assessed category was ${strongest.toLowerCase()}. ` +
-                `Your result was held back most by ${weakest.toLowerCase()}. ` +
-                `Improving that category should have the greatest immediate effect on your overall competitive level.`
+                `${levelExplanation} Your strongest assessed category was ${strongest.toLowerCase()}. ` +
+                `Your overall result was held back most by ${weakest.toLowerCase()}. ` +
+                `Improving that category should have the greatest immediate effect on your competitive performance.`
+            );
+        }
+
+        function saveResult(result) {
+            const history = JSON.parse(localStorage.getItem("pickleRateHistory") || "[]");
+            history.unshift(result);
+
+            localStorage.setItem(
+                "pickleRateHistory",
+                JSON.stringify(history.slice(0, 20))
             );
         }
 
         function calculateResults() {
-            const categoryScores =
-                calculateCategoryScores();
+            const categoryScores = calculateCategoryScores();
+            const overallScore = calculateOverallScore(categoryScores);
+            const rating = convertScoreToRating(overallScore);
+            const confidence = calculateConfidence(categoryScores);
+            const range = getRatingRange(rating, confidence);
 
-            const overallScore =
-                calculateOverallScore(
-                    categoryScores
-                );
-
-            const rating =
-                convertScoreToRating(
-                    overallScore
-                );
-
-            const range =
-                getRatingRange(rating);
-
-            const confidence =
-                calculateConfidence(
-                    categoryScores
-                );
-
-            document.getElementById(
-                "finalRating"
-            ).textContent =
-                rating.toFixed(2);
-
-            document.getElementById(
-                "finalLevel"
-            ).textContent =
-                getRatingLabel(rating);
-
-            document.getElementById(
-                "finalRange"
-            ).textContent =
+            document.getElementById("finalRating").textContent = rating.toFixed(2);
+            document.getElementById("finalLevel").textContent = getRatingLabel(rating);
+            document.getElementById("finalRange").textContent =
                 `Likely range: ${range.lower}–${range.upper}`;
+            document.getElementById("confidenceValue").textContent = `${confidence}%`;
+            document.getElementById("confidenceBar").style.width = `${confidence}%`;
+            document.getElementById("resultExplanation").textContent =
+                createExplanation(rating, categoryScores);
 
-            document.getElementById(
-                "confidenceValue"
-            ).textContent =
-                `${confidence}%`;
+            displayCategoryResults(categoryScores);
+            displayInsights(categoryScores);
 
-            document.getElementById(
-                "confidenceBar"
-            ).style.width =
-                `${confidence}%`;
-
-            document.getElementById(
-                "resultExplanation"
-            ).textContent =
-                createExplanation(
-                    rating,
-                    categoryScores
-                );
-
-            displayCategoryResults(
+            saveResult({
+                date: new Date().toISOString(),
+                rating: Number(rating.toFixed(2)),
+                level: getRatingLabel(rating),
+                confidence,
+                range,
                 categoryScores
-            );
-
-            displayInsights(
-                categoryScores
-            );
+            });
 
             showPage("results");
         }
 
-        document
-            .getElementById(
-                "startAssessmentButton"
-            )
-            .addEventListener(
-                "click",
-                startAssessment
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem("pickleRateHistory") || "[]");
+            const statsContainer = document.getElementById("historyStats");
+            const listContainer = document.getElementById("historyList");
+
+            statsContainer.innerHTML = "";
+            listContainer.innerHTML = "";
+
+            if (history.length === 0) {
+                statsContainer.innerHTML = "";
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        No completed assessments have been saved on this device yet.
+                    </div>
+                `;
+                return;
+            }
+
+            const latest = history[0];
+            const best = Math.max(...history.map(item => item.rating));
+            const oldest = history[history.length - 1];
+            const change = latest.rating - oldest.rating;
+
+            const stats = [
+                { label: "Latest rating", value: latest.rating.toFixed(2) },
+                { label: "Best rating", value: best.toFixed(2) },
+                {
+                    label: "Change",
+                    value: `${change >= 0 ? "+" : ""}${change.toFixed(2)}`
+                }
+            ];
+
+            stats.forEach(stat => {
+                const card = document.createElement("article");
+                card.className = "stat-card";
+                card.innerHTML = `
+                    <div class="stat-value">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                `;
+                statsContainer.appendChild(card);
+            });
+
+            history.forEach(item => {
+                const date = new Date(item.date);
+                const strongest = Object.entries(item.categoryScores)
+                    .sort((a, b) => b[1] - a[1])[0];
+
+                const card = document.createElement("article");
+                card.className = "history-card";
+                card.innerHTML = `
+                    <div class="history-header">
+                        <div>
+                            <div class="history-rating">${item.rating.toFixed(2)}</div>
+                            <div class="history-date">
+                                ${date.toLocaleDateString("en-ZA", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric"
+                                })}
+                            </div>
+                        </div>
+                        <div class="muted">${item.confidence}% confidence</div>
+                    </div>
+                    <p>
+                        ${item.level}. Likely range:
+                        ${item.range.lower}–${item.range.upper}.
+                        Strongest category: ${categoryNames[strongest[0]]}.
+                    </p>
+                `;
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        document.getElementById("startAssessmentButton").addEventListener("click", startAssessment);
+        document.getElementById("viewHistoryButton").addEventListener("click", () => showPage("history"));
+        document.getElementById("retakeButton").addEventListener("click", startAssessment);
+        document.getElementById("returnHomeButton").addEventListener("click", () => showPage("home"));
+        document.getElementById("historyFromResultsButton").addEventListener("click", () => showPage("history"));
+        document.getElementById("historyStartButton").addEventListener("click", startAssessment);
+
+        document.getElementById("clearHistoryButton").addEventListener("click", () => {
+            const confirmed = window.confirm(
+                "Are you sure you want to remove all saved PickleRate results from this device?"
             );
 
-        document
-            .getElementById("learnMoreButton")
-            .addEventListener("click", () => {
-                alert(
-                    "PickleRate scores different parts of your game separately. " +
-                    "Your category scores are combined using weighted averages " +
-                    "to produce an estimated rating and development priorities."
-                );
+            if (!confirmed) {
+                return;
+            }
+
+            localStorage.removeItem("pickleRateHistory");
+            renderHistory();
+        });
+
+        document.querySelectorAll("[data-page]").forEach(button => {
+            button.addEventListener("click", () => {
+                const target = button.dataset.page;
+
+                if (target === "assessment") {
+                    startAssessment();
+                    return;
+                }
+
+                showPage(target);
             });
+        });
 
-        document
-            .getElementById("aboutButton")
-            .addEventListener("click", () => {
-                alert(
-                    "PickleRate is an independent self-assessment project. " +
-                    "It does not replace an official DUPR or tournament rating."
-                );
-            });
-
-        document
-            .querySelectorAll("[data-page]")
-            .forEach((button) => {
-                button.addEventListener(
-                    "click",
-                    () => {
-                        const target =
-                            button.dataset.page;
-
-                        if (target === "assessment") {
-                            startAssessment();
-                            return;
-                        }
-
-                        showPage(target);
-                    }
-                );
-            });
-
-        previousButton.addEventListener(
-            "click",
-            goToPreviousQuestion
-        );
-
-        nextButton.addEventListener(
-            "click",
-            goToNextQuestion
-        );
-
-        document
-            .getElementById("retakeButton")
-            .addEventListener(
-                "click",
-                startAssessment
-            );
-
-        document
-            .getElementById("returnHomeButton")
-            .addEventListener("click", () => {
-                showPage("home");
-            });
+        previousButton.addEventListener("click", goToPreviousQuestion);
+        nextButton.addEventListener("click", goToNextQuestion);
     </script>
 </body>
 </html>
