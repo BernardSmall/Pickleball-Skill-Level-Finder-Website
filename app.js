@@ -86,3 +86,55 @@ function formatDate(v){return new Intl.DateTimeFormat('en-ZA',{dateStyle:'medium
 function escapeHtml(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 window.deleteRecord=deleteRecord;window.downloadRecord=downloadRecord;
 init();
+
+// App-style routing, navigation and long-term insights.
+const APP_VIEWS=['landingView','testerView','assessmentView','resultsView','historyView','historyDetailView','insightsView','aboutView'];
+let suppressRoutePush=false;
+const originalSwitchView=switchView;
+switchView=function(id){
+  APP_VIEWS.forEach(v=>{const el=$(v);if(el)el.classList.toggle('hidden',v!==id)});
+  document.body.dataset.view=id;
+  document.querySelectorAll('[data-route]').forEach(el=>el.classList.toggle('active',el.dataset.route===id||(id==='historyDetailView'&&el.dataset.route==='historyView')));
+  document.querySelector('.main-nav')?.classList.remove('open');
+  if(id==='insightsView')renderJourneyInsights();
+  if(!suppressRoutePush){const hash=viewToHash(id);if(location.hash!==hash)history.pushState({view:id},'',hash)}
+  suppressRoutePush=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+function viewToHash(id){return({landingView:'#home',testerView:'#tester',assessmentView:'#assessment',resultsView:'#results',historyView:'#journey',historyDetailView:'#journey-detail',insightsView:'#insights',aboutView:'#about'})[id]||'#home'}
+function hashToView(){return({'#home':'landingView','#tester':'testerView','#assessment':'assessmentView','#results':'resultsView','#journey':'historyView','#journey-detail':'historyDetailView','#insights':'insightsView','#about':'aboutView'})[location.hash]||'landingView'}
+function routeTo(id){
+  if(id==='historyView'){showHistory();return}
+  if(id==='historyDetailView'&&currentRecordId){showHistoryDetail(currentRecordId);return}
+  switchView(id);
+  $('resetHeaderBtn')?.classList.toggle('hidden',id!=='assessmentView');
+}
+function setupAppNavigation(){
+  document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();routeTo(el.dataset.route)}));
+  document.querySelectorAll('[data-action="start"]').forEach(el=>el.addEventListener('click',()=>openTester(false)));
+  $('mobileMenuBtn')?.addEventListener('click',()=>document.querySelector('.main-nav')?.classList.toggle('open'));
+  window.addEventListener('popstate',()=>{suppressRoutePush=true;routeTo(hashToView())});
+  if(location.hash&&location.hash!=='#home'){suppressRoutePush=true;routeTo(hashToView())}else history.replaceState({view:'landingView'},'','#home');
+}
+function renderJourneyInsights(){
+  const h=[...getHistory()].reverse(),host=$('journeyInsights');
+  if(!host)return;
+  if(!h.length){host.innerHTML='<article class="detail-card empty-insights"><h2>Your insights will grow with you</h2><p>Complete your first assessment to establish a baseline. After two or more assessments, PickleRate will show rating trends and skill changes.</p><button class="primary-btn" onclick="openTester(false)">Start assessment →</button></article>';return}
+  const latest=h[h.length-1],first=h[0],delta=latest.results.overall-first.results.overall;
+  const allSkillNames=[...new Set(h.flatMap(r=>Object.keys(r.results.skills||{})))];
+  const changes=allSkillNames.map(name=>{const a=first.results.skills?.[name]?.score,b=latest.results.skills?.[name]?.score;return a==null||b==null?null:{name,change:b-a,current:b}}).filter(Boolean).sort((a,b)=>b.change-a.change);
+  const strongest=Object.entries(latest.results.skills||{}).sort((a,b)=>b[1].score-a[1].score).slice(0,4);
+  const priorities=Object.entries(latest.results.skills||{}).sort((a,b)=>a[1].score-b[1].score).slice(0,4);
+  host.innerHTML=`<div class="history-summary">${stat(h.length,'Assessments')}${stat(latest.results.overall.toFixed(2),'Current rating')}${stat(`${delta>=0?'+':''}${delta.toFixed(2)}`,'Rating change')}${stat(`${latest.results.confidence}%`,'Current confidence')}</div>
+  <div class="insights-grid">
+    <article class="detail-card wide"><span class="eyebrow">RATING TREND</span><h2>Your assessment timeline</h2><div class="trend-line">${h.map((r,i)=>`<div class="trend-column"><b>${r.results.overall.toFixed(2)}</b><div class="trend-bar" style="height:${Math.max(12,r.results.overall/5*150)}px"></div><small>${new Date(r.createdAt).toLocaleDateString('en-ZA',{day:'numeric',month:'short'})}</small></div>`).join('')}</div></article>
+    <article class="detail-card"><span class="eyebrow">CURRENT STRENGTHS</span><h2>What is supporting your level</h2><div class="chart-list">${chartRows(Object.fromEntries(strongest.map(([n,d])=>[n,d.score])))}</div></article>
+    <article class="detail-card"><span class="eyebrow">NEXT FOCUS</span><h2>Highest-return practice areas</h2><div class="drill-list">${priorities.map(([n,d])=>drillHtml(n,d.score)).join('')}</div></article>
+    <article class="detail-card"><span class="eyebrow">MOST IMPROVED</span><h2>Changes from your baseline</h2>${h.length<2?'<p>Complete another assessment after a period of focused practice to unlock comparisons.</p>':`<div class="chart-list">${changes.slice(0,5).map(x=>`<div class="chart-row"><span>${x.name}</span><div class="chart-track"><div class="chart-fill" style="width:${Math.max(4,x.current/5*100)}%"></div></div><b>${x.change>=0?'+':''}${x.change.toFixed(2)}</b></div>`).join('')}</div>`}</article>
+    <article class="detail-card"><span class="eyebrow">CONSISTENT LIMITERS</span><h2>Skills to revisit regularly</h2><p>${priorities.map(([n])=>n).join(', ')} currently sit lowest in your latest profile. Use the suggested drills, then reassess after enough match play to judge whether the improvement transfers.</p></article>
+  </div>`;
+}
+const originalShowHistoryDetail=showHistoryDetail;
+showHistoryDetail=function(id){originalShowHistoryDetail(id);history.replaceState({view:'historyDetailView',id},'',`#journey-detail`)};
+window.openTester=openTester;
+setupAppNavigation();
