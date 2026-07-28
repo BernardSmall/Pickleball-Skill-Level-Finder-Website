@@ -1,0 +1,65 @@
+[
+  {
+    "low": "serveIn",
+    "high": "servePlacement",
+    "lowAtMost": 2,
+    "highAtLeast": 5,
+    "label": "serve consistency versus advanced placement"
+  },
+  {
+    "low": "returnIn",
+    "high": "returnDepth",
+    "lowAtMost": 2,
+    "highAtLeast": 5,
+    "label": "return consistency versus depth"
+  },
+  {
+    "low": "dropSuccess",
+    "high": "dropAdjustment",
+    "lowAtMost": 2,
+    "highAtLeast": 4,
+    "label": "basic drop success versus advanced drop adjustment"
+  },
+  {
+    "low": "dinkCrosscourt",
+    "high": "dinkPressure",
+    "lowAtMost": 2,
+    "highAtLeast": 4,
+    "label": "basic dink control versus pressure dinking"
+  },
+  {
+    "low": "lowBallPatience",
+    "high": "speedupSelection",
+    "lowAtMost": 2,
+    "highAtLeast": 5,
+    "label": "low-ball discipline versus speed-up selection"
+  },
+  {
+    "low": "blockDrive",
+    "high": "handsRecovery",
+    "lowAtMost": 2,
+    "highAtLeast": 4,
+    "label": "basic blocking versus advanced hands recovery"
+  },
+  {
+    "low": "backhandBlock",
+    "high": "counterBackhand",
+    "lowAtMost": 2,
+    "highAtLeast": 4,
+    "label": "backhand defence versus backhand countering"
+  },
+  {
+    "low": "rallyConsistency",
+    "high": "versus40",
+    "lowAtMost": 2,
+    "highAtLeast": 4,
+    "label": "pressure consistency versus 4.0 performance"
+  },
+  {
+    "low": "unforcedErrors",
+    "high": "tournamentTransfer",
+    "lowAtMost": 2,
+    "highAtLeast": 5,
+    "label": "unforced-error control versus tournament transfer"
+  }
+]

@@ -1,0 +1,346 @@
+{
+  "serveIn": {
+    "importance": 5,
+    "difficulty": 1,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 2,
+    "maximumSkill": 4.5
+  },
+  "serveDepth": {
+    "importance": 4,
+    "difficulty": 2,
+    "reliability": 4,
+    "dimension": "execution",
+    "minimumSkill": 2.5,
+    "maximumSkill": 4.5
+  },
+  "servePlacement": {
+    "importance": 3,
+    "difficulty": 3,
+    "reliability": 3,
+    "dimension": "execution",
+    "minimumSkill": 3,
+    "maximumSkill": 4.5
+  },
+  "returnIn": {
+    "importance": 5,
+    "difficulty": 1,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 2,
+    "maximumSkill": 4.5
+  },
+  "returnDepth": {
+    "importance": 5,
+    "difficulty": 2,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 2.5,
+    "maximumSkill": 4.5
+  },
+  "returnAdvance": {
+    "importance": 5,
+    "difficulty": 2,
+    "reliability": 4,
+    "dimension": "positioning",
+    "minimumSkill": 2.5,
+    "maximumSkill": 4.5
+  },
+  "dropSuccess": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 3,
+    "maximumSkill": 5
+  },
+  "dropForehand": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "dropBackhand": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "execution",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "dropAdjustment": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "adaptability",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "driveSelection": {
+    "importance": 4,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "decision",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "fifthShot": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 5,
+    "dimension": "transition",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "dinkCrosscourt": {
+    "importance": 5,
+    "difficulty": 2,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 2.75,
+    "maximumSkill": 4.75
+  },
+  "dinkStraight": {
+    "importance": 4,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "execution",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "dinkPlacement": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 5,
+    "dimension": "decision",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "dinkPressure": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 5,
+    "dimension": "pressure",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "lowBallPatience": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "decision",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "kitchenMovement": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "positioning",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "transitionReset": {
+    "importance": 5,
+    "difficulty": 5,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "blockDrive": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "backhandBlock": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 5,
+    "dimension": "execution",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "resetAfterPop": {
+    "importance": 4,
+    "difficulty": 5,
+    "reliability": 4,
+    "dimension": "recovery",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "defensiveLob": {
+    "importance": 2,
+    "difficulty": 4,
+    "reliability": 2,
+    "dimension": "specialist",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "handsRecovery": {
+    "importance": 4,
+    "difficulty": 5,
+    "reliability": 4,
+    "dimension": "recovery",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "speedupSelection": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "decision",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "speedupExecution": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "execution",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "counterForehand": {
+    "importance": 3,
+    "difficulty": 4,
+    "reliability": 3,
+    "dimension": "execution",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "counterBackhand": {
+    "importance": 4,
+    "difficulty": 5,
+    "reliability": 4,
+    "dimension": "execution",
+    "minimumSkill": 3.75,
+    "maximumSkill": 5
+  },
+  "attackTargets": {
+    "importance": 3,
+    "difficulty": 4,
+    "reliability": 3,
+    "dimension": "decision",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "partnerMovement": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 5,
+    "dimension": "positioning",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "middleCoverage": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "positioning",
+    "minimumSkill": 3,
+    "maximumSkill": 4.75
+  },
+  "targeting": {
+    "importance": 4,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "decision",
+    "minimumSkill": 3.25,
+    "maximumSkill": 4.75
+  },
+  "patternRecognition": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "decision",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "shotTolerance": {
+    "importance": 5,
+    "difficulty": 3,
+    "reliability": 5,
+    "dimension": "decision",
+    "minimumSkill": 3.25,
+    "maximumSkill": 4.75
+  },
+  "rallyConsistency": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 5,
+    "dimension": "pressure",
+    "minimumSkill": 3,
+    "maximumSkill": 5
+  },
+  "unforcedErrors": {
+    "importance": 5,
+    "difficulty": 2,
+    "reliability": 5,
+    "dimension": "consistency",
+    "minimumSkill": 2.5,
+    "maximumSkill": 4.75
+  },
+  "badDayFloor": {
+    "importance": 5,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "consistency",
+    "minimumSkill": 3,
+    "maximumSkill": 5
+  },
+  "adaptPressure": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 4,
+    "dimension": "adaptability",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "versus35": {
+    "importance": 4,
+    "difficulty": 3,
+    "reliability": 4,
+    "dimension": "performance",
+    "minimumSkill": 3,
+    "maximumSkill": 4.5
+  },
+  "versus40": {
+    "importance": 5,
+    "difficulty": 5,
+    "reliability": 5,
+    "dimension": "performance",
+    "minimumSkill": 3.5,
+    "maximumSkill": 5
+  },
+  "strongPartner": {
+    "importance": 4,
+    "difficulty": 4,
+    "reliability": 3,
+    "dimension": "performance",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "newPartner": {
+    "importance": 3,
+    "difficulty": 4,
+    "reliability": 3,
+    "dimension": "adaptability",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  },
+  "tournamentTransfer": {
+    "importance": 5,
+    "difficulty": 5,
+    "reliability": 4,
+    "dimension": "pressure",
+    "minimumSkill": 3.25,
+    "maximumSkill": 5
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "scoreToRating": [
+    {
+      "score": 1,
+      "rating": 2
+    },
+    {
+      "score": 1.7,
+      "rating": 2.5
+    },
+    {
+      "score": 2.4,
+      "rating": 3
+    },
+    {
+      "score": 3.1,
+      "rating": 3.5
+    },
+    {
+      "score": 3.85,
+      "rating": 4
+    },
+    {
+      "score": 4.45,
+      "rating": 4.5
+    },
+    {
+      "score": 5,
+      "rating": 4.9
+    }
+  ],
+  "labels": [
+    {
+      "below": 2.5,
+      "label": "Beginner player"
+    },
+    {
+      "below": 3,
+      "label": "Developing 2.5"
+    },
+    {
+      "below": 3.5,
+      "label": "Competitive 3.0"
+    },
+    {
+      "below": 4,
+      "label": "Competitive 3.5"
+    },
+    {
+      "below": 4.5,
+      "label": "Advanced 4.0"
+    },
+    {
+      "below": 99,
+      "label": "Advanced 4.5+"
+    }
+  ],
+  "confidenceRanges": [
+    {
+      "minimumConfidence": 88,
+      "spread": 0.15
+    },
+    {
+      "minimumConfidence": 80,
+      "spread": 0.22
+    },
+    {
+      "minimumConfidence": 70,
+      "spread": 0.3
+    },
+    {
+      "minimumConfidence": 0,
+      "spread": 0.38
+    }
+  ]
+}

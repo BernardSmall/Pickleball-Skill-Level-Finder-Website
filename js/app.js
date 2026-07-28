@@ -204,38 +204,57 @@ function calculateResults() {
 
     showPage("results");
 }
-document.getElementById("startAssessmentButton").addEventListener("click", startAssessment);
-document.getElementById("viewHistoryButton").addEventListener("click", () => showPage("history"));
-document.getElementById("retakeButton").addEventListener("click", startAssessment);
-document.getElementById("returnHomeButton").addEventListener("click", () => showPage("home"));
-document.getElementById("historyFromResultsButton").addEventListener("click", () => showPage("history"));
-document.getElementById("historyStartButton").addEventListener("click", startAssessment);
+function initialiseApplication() {
+    document.querySelectorAll("[data-question-count]").forEach(element => {
+        element.textContent = questions.length;
+    });
 
-document.getElementById("clearHistoryButton").addEventListener("click", () => {
-    const confirmed = window.confirm(
-        "Are you sure you want to remove all saved PickleRate results from this device?"
-    );
+    document.getElementById("startAssessmentButton").addEventListener("click", startAssessment);
+    document.getElementById("viewHistoryButton").addEventListener("click", () => showPage("history"));
+    document.getElementById("retakeButton").addEventListener("click", startAssessment);
+    document.getElementById("returnHomeButton").addEventListener("click", () => showPage("home"));
+    document.getElementById("historyFromResultsButton").addEventListener("click", () => showPage("history"));
+    document.getElementById("historyStartButton").addEventListener("click", startAssessment);
 
-    if (!confirmed) {
-        return;
-    }
+    document.getElementById("clearHistoryButton").addEventListener("click", () => {
+        const confirmed = window.confirm(
+            "Are you sure you want to remove all saved PickleRate results from this device?"
+        );
 
-    localStorage.removeItem("pickleRateHistory");
-    renderHistory();
-});
-
-document.querySelectorAll("[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-        const target = button.dataset.page;
-
-        if (target === "assessment") {
-            startAssessment();
+        if (!confirmed) {
             return;
         }
 
-        showPage(target);
+        localStorage.removeItem(STORAGE_KEYS.HISTORY);
+        renderHistory();
     });
-});
 
-previousButton.addEventListener("click", goToPreviousQuestion);
-nextButton.addEventListener("click", goToNextQuestion);
+    document.querySelectorAll("[data-page]").forEach(button => {
+        button.addEventListener("click", () => {
+            const target = button.dataset.page;
+
+            if (target === "assessment") {
+                startAssessment();
+                return;
+            }
+
+            showPage(target);
+        });
+    });
+
+    previousButton.addEventListener("click", goToPreviousQuestion);
+    nextButton.addEventListener("click", goToNextQuestion);
+}
+
+dataReady
+    .then(initialiseApplication)
+    .catch(error => {
+        console.error(error);
+        document.body.innerHTML = `
+            <main class="data-error">
+                <h1>PickleRate could not load its data</h1>
+                <p>${error.message}</p>
+                <p>Open this project through a local web server, GitHub Pages or Netlify rather than double-clicking index.html.</p>
+            </main>
+        `;
+    });

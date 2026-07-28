@@ -1,11 +1,11 @@
 // Browser-based assessment history and expandable saved-result cards.
 
 function saveResult(result) {
-    const history = JSON.parse(localStorage.getItem("pickleRateHistory") || "[]");
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || "[]");
     history.unshift(result);
 
     localStorage.setItem(
-        "pickleRateHistory",
+        STORAGE_KEYS.HISTORY,
         JSON.stringify(history.slice(0, 20))
     );
 }
@@ -63,7 +63,7 @@ function createHistoryCategoryMarkup(categoryScores) {
 }
 
 function renderHistory() {
-    const history = JSON.parse(localStorage.getItem("pickleRateHistory") || "[]");
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || "[]");
     const statsContainer = document.getElementById("historyStats");
     const listContainer = document.getElementById("historyList");
 
