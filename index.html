@@ -22,6 +22,7 @@
       <button id="historyHeaderBtn" data-route="historyView" class="nav-link">My Journey</button>
       <button data-route="insightsView" class="nav-link">Insights</button>
       <button data-route="skillsView" class="nav-link">Skills</button>
+      <button data-route="practiceView" class="nav-link">Practice Hub</button>
       <button data-route="aboutView" class="nav-link">About</button>
     </nav>
     <div class="header-actions">
@@ -175,6 +176,7 @@
 
       <div class="results-actions">
         <button id="retakeBtn" class="secondary-btn" type="button">Retake assessment</button>
+        <button class="secondary-btn" type="button" data-route="practiceView">Open Practice Hub</button>
         <button id="downloadBtn" class="primary-btn" type="button">Download results <span>↓</span></button>
       </div>
     </section>
@@ -202,6 +204,17 @@
     <section id="skillDetailView" class="view skill-detail-view hidden">
       <button id="backToSkillsBtn" class="text-btn" type="button">← Back to skills</button>
       <div id="skillDetail"></div>
+    </section>
+
+
+    <section id="practiceView" class="view practice-view hidden">
+      <div class="page-heading"><span class="eyebrow">PRACTICE HUB</span><h1>Turn insight into improvement</h1><p>Your latest assessment creates a focused practice plan with drills, progressions, success benchmarks and an in-app reassessment date.</p></div>
+      <div id="practiceHub"></div>
+    </section>
+
+    <section id="practiceSkillView" class="view practice-skill-view hidden">
+      <button id="backToPracticeBtn" class="text-btn" type="button">← Back to Practice Hub</button>
+      <div id="practiceSkillDetail"></div>
     </section>
 
     <section id="aboutView" class="view about-view hidden">

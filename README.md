@@ -27,3 +27,7 @@ Open `http://localhost:8000`.
 ## Storage
 
 Assessment progress and completed reports are stored in browser `localStorage`. They remain on the same browser/device until cleared. This prototype does not yet include accounts or cloud synchronisation.
+
+
+## Practice Hub
+The Practice Hub uses the latest saved assessment to prioritise five skills. It includes three-stage progressions, success benchmarks, common mistakes, video placeholders, session notes, completion tracking and an in-app 2–4 week reassessment date. Practice data is stored in browser localStorage.
