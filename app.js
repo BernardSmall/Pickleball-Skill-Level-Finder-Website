@@ -303,3 +303,83 @@ $('backToPracticeBtn')?.addEventListener('click',()=>routeTo('practiceView'));
 window.showPracticeSkill=showPracticeSkill;
 
 if(location.hash==='#practice'||location.hash==='#practice-skill'){suppressRoutePush=true;routeTo(hashToView())}
+
+
+// Social comparison, drill library and settings.
+const SETTINGS_KEY='picklerate-v3-settings';
+const FRIENDS_KEY='picklerate-v3-friends';
+APP_VIEWS.push('compareFriendsView','drillLibraryView','settingsView');
+const previousViewToHash2=viewToHash;
+viewToHash=function(id){return ({compareFriendsView:'#compare-friends',drillLibraryView:'#drills',settingsView:'#settings'})[id]||previousViewToHash2(id)};
+const previousHashToView2=hashToView;
+hashToView=function(){return ({'#compare-friends':'compareFriendsView','#drills':'drillLibraryView','#settings':'settingsView'})[location.hash]||previousHashToView2()};
+const previousSwitchView2=switchView;
+switchView=function(id){
+  previousSwitchView2(id);
+  if(id==='compareFriendsView')renderCompareFriends();
+  if(id==='drillLibraryView')renderDrillLibrary();
+  if(id==='settingsView')renderSettings();
+};
+function readLocal(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
+function writeLocal(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function latestAssessment(){return getHistory()[0]||null}
+function settingsState(){return readLocal(SETTINGS_KEY,{name:'',goal:4,hand:'',environment:'Both',theme:'light',compactNav:false})}
+function saveSettingsState(value){writeLocal(SETTINGS_KEY,value);applySettings(value)}
+function applySettings(s=settingsState()){
+ document.documentElement.dataset.theme=s.theme||'light';
+ document.body.classList.toggle('compact-nav',!!s.compactNav);
+}
+applySettings();
+
+function buildSharePayload(){
+ const latest=latestAssessment(); if(!latest)return null;
+ const s=settingsState();
+ return {version:1,name:s.name||latest.tester?.name||'PickleRate player',createdAt:latest.createdAt,results:{overall:latest.results.overall,confidence:latest.results.confidence,pillars:latest.results.pillars,skills:latest.results.skills}};
+}
+function encodeSharePayload(payload){return btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/=+$/,'')}
+function decodeSharePayload(code){const padded=code.trim().replace(/\s/g,'')+'==='.slice((code.trim().length+3)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))))}
+function friendsState(){return readLocal(FRIENDS_KEY,[])}
+function renderCompareFriends(){
+ const host=$('compareFriendsApp'); if(!host)return; const mine=latestAssessment(),friends=friendsState();
+ if(!mine){host.innerHTML='<article class="detail-card empty-insights"><h2>Complete an assessment first</h2><p>Your latest frozen result is used as your side of every comparison.</p><button class="primary-btn" onclick="openTester(false)">Start assessment →</button></article>';return}
+ const payload=buildSharePayload(),code=encodeSharePayload(payload);
+ host.innerHTML=`<div class="friend-tools-grid"><article class="detail-card"><span class="eyebrow">YOUR SHARE CODE</span><h2>Share your latest profile</h2><p>This code contains your latest scores but not your full question answers.</p><textarea id="myFriendCode" rows="5" readonly>${code}</textarea><button id="copyFriendCode" class="primary-btn">Copy code</button></article><article class="detail-card"><span class="eyebrow">ADD A FRIEND</span><h2>Import their code</h2><p>Ask your friend to create a code from their Compare Friends page.</p><textarea id="friendCodeInput" rows="5" placeholder="Paste a PickleRate friend code"></textarea><div class="inline-actions"><button id="importFriendCode" class="primary-btn">Import friend</button><span id="friendImportStatus" class="form-status"></span></div></article></div>
+ <div class="section-heading"><div><span class="eyebrow">SAVED FRIENDS</span><h2>Choose someone to compare</h2></div></div><div class="friend-list">${friends.length?friends.map((f,i)=>`<article class="friend-card glass-card"><div><strong>${escapeHtml(f.name)}</strong><span>${new Date(f.createdAt).toLocaleDateString('en-ZA')}</span></div><b>${Number(f.results.overall).toFixed(2)}</b><button data-compare-friend="${i}" class="secondary-btn">Compare</button><button data-remove-friend="${i}" class="icon-btn" aria-label="Remove friend">×</button></article>`).join(''):'<article class="detail-card"><p>No friends imported yet. Share your code and paste theirs above.</p></article>'}</div><div id="friendComparison"></div>`;
+ $('copyFriendCode').onclick=async()=>{await navigator.clipboard.writeText(code);$('copyFriendCode').textContent='Copied ✓'};
+ $('importFriendCode').onclick=()=>{try{const f=decodeSharePayload($('friendCodeInput').value);if(!f?.results?.skills||!Number.isFinite(Number(f.results.overall)))throw Error();const list=friendsState();list.unshift(f);writeLocal(FRIENDS_KEY,list.slice(0,20));renderCompareFriends()}catch{$('friendImportStatus').textContent='That code is not valid.'}};
+ host.querySelectorAll('[data-compare-friend]').forEach(b=>b.onclick=()=>renderFriendComparison(friendsState()[Number(b.dataset.compareFriend)]));
+ host.querySelectorAll('[data-remove-friend]').forEach(b=>b.onclick=()=>{const list=friendsState();list.splice(Number(b.dataset.removeFriend),1);writeLocal(FRIENDS_KEY,list);renderCompareFriends()});
+}
+function renderFriendComparison(friend){
+ const mine=latestAssessment();if(!mine||!friend)return;const a=mine.results.skills||{},b=friend.results.skills||{};
+ const names=[...new Set([...Object.keys(a),...Object.keys(b)])].filter(n=>a[n]&&b[n]);
+ const rows=names.map(n=>({name:n,mine:a[n].score,theirs:b[n].score,gap:a[n].score-b[n].score})).sort((x,y)=>Math.abs(y.gap)-Math.abs(x.gap));
+ const shared=rows.filter(x=>x.mine<3.6&&x.theirs<3.6).sort((x,y)=>(x.mine+x.theirs)-(y.mine+y.theirs)).slice(0,3);
+ $('friendComparison').innerHTML=`<article class="detail-card friend-comparison"><div class="comparison-hero"><div><span>You</span><strong>${mine.results.overall.toFixed(2)}</strong></div><span class="versus">VS</span><div><span>${escapeHtml(friend.name)}</span><strong>${Number(friend.results.overall).toFixed(2)}</strong></div></div><h2>Biggest skill differences</h2><div class="comparison-list">${rows.slice(0,10).map(x=>`<div><span>${escapeHtml(x.name)}</span><b class="${x.gap>.08?'up':x.gap<-.08?'down':'flat'}">${x.gap>=0?'+':''}${x.gap.toFixed(2)}</b></div>`).join('')}</div><div class="shared-plan"><span class="eyebrow">SHARED PRACTICE PLAN</span><h2>${shared.length?'Skills you can improve together':'No clear shared weakness yet'}</h2>${shared.length?shared.map(x=>`<button class="skill-link" onclick="showPracticeSkill('${encodeURIComponent(x.name)}'.includes('%')?decodeURIComponent('${encodeURIComponent(x.name)}'):'${escapeHtml(x.name)}')">${escapeHtml(x.name)} · ${(x.mine+x.theirs)/2<3?'Foundation':'Pressure'} work →</button>`).join(''):'<p>Compare again after both players complete more assessments.</p>'}</div></article>`;
+ $('friendComparison').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function allDrillEntries(){
+ const skills=[...new Set([...Object.keys(drills),...Object.keys(typeof practiceLibrary==='object'?practiceLibrary:{})])];
+ return skills.flatMap(skill=>{const spec=practiceSpec(skill);return spec.levels.map((level,i)=>({skill,title:(drills[skill]?.[0]||`${skill} practice`)+' — '+level[0],difficulty:level[0],description:level[1],benchmark:spec.benchmark,mistakes:spec.mistakes}))});
+}
+function renderDrillLibrary(){
+ const search=$('drillSearch'),cat=$('drillCategory'),diff=$('drillDifficulty');if(!search||!cat||!diff)return;
+ const entries=allDrillEntries(),categories=[...new Set(entries.map(x=>x.skill))].sort();
+ if(cat.options.length===1)cat.insertAdjacentHTML('beforeend',categories.map(x=>`<option>${escapeHtml(x)}</option>`).join(''));
+ const draw=()=>{const q=search.value.toLowerCase(),c=cat.value,d=diff.value;const filtered=entries.filter(x=>(c==='all'||x.skill===c)&&(d==='all'||x.difficulty===d)&&(!q||`${x.skill} ${x.title} ${x.description} ${x.benchmark}`.toLowerCase().includes(q)));$('drillLibraryGrid').innerHTML=filtered.length?filtered.map((x,i)=>`<article class="drill-card glass-card"><div class="drill-card-top"><span class="difficulty-pill">${escapeHtml(x.difficulty)}</span><small>${escapeHtml(x.skill)}</small></div><h2>${escapeHtml(x.title)}</h2><p>${escapeHtml(x.description)}</p><div class="drill-meta"><b>Success benchmark</b><span>${escapeHtml(x.benchmark)}</span></div><details><summary>Common mistakes</summary><ul>${x.mistakes.map(m=>`<li>${escapeHtml(m)}</li>`).join('')}</ul></details><button class="secondary-btn" data-library-practice="${encodeURIComponent(x.skill)}">Open skill practice</button></article>`).join(''):'<article class="detail-card"><h2>No drills found</h2><p>Try a different search or filter.</p></article>';document.querySelectorAll('[data-library-practice]').forEach(b=>b.onclick=()=>showPracticeSkill(decodeURIComponent(b.dataset.libraryPractice)))};
+ search.oninput=draw;cat.onchange=draw;diff.onchange=draw;draw();
+}
+
+function renderSettings(){
+ const host=$('settingsApp');if(!host)return;const s=settingsState(),latest=latestAssessment(),historyCount=getHistory().length;
+ host.innerHTML=`<article class="detail-card"><span class="eyebrow">PLAYER PROFILE</span><h2>Your development context</h2><div class="settings-form"><label>Display name<input id="settingName" value="${escapeHtml(s.name||'')}" placeholder="Your name or player ID"></label><label>Target rating<input id="settingGoal" type="number" min="1" max="5.5" step="0.1" value="${Number(s.goal||4)}"></label><label>Preferred hand<select id="settingHand"><option value="">Not set</option><option ${s.hand==='Right'?'selected':''}>Right</option><option ${s.hand==='Left'?'selected':''}>Left</option></select></label><label>Playing environment<select id="settingEnvironment"><option ${s.environment==='Both'?'selected':''}>Both</option><option ${s.environment==='Indoor'?'selected':''}>Indoor</option><option ${s.environment==='Outdoor'?'selected':''}>Outdoor</option></select></label></div><button id="saveSettings" class="primary-btn">Save profile</button></article>
+ <article class="detail-card"><span class="eyebrow">APPEARANCE</span><h2>Display preferences</h2><label class="setting-toggle"><span><b>Dark appearance</b><small>Use a darker app surface.</small></span><input id="settingDark" type="checkbox" ${s.theme==='dark'?'checked':''}></label><label class="setting-toggle"><span><b>Compact navigation</b><small>Show icons only on wider screens.</small></span><input id="settingCompact" type="checkbox" ${s.compactNav?'checked':''}></label></article>
+ <article class="detail-card"><span class="eyebrow">YOUR DATA</span><h2>Stored on this device</h2><div class="settings-stats"><div><strong>${historyCount}</strong><span>Assessments</span></div><div><strong>${friendsState().length}</strong><span>Friends</span></div><div><strong>${latest?latest.results.overall.toFixed(2):'—'}</strong><span>Latest rating</span></div></div><div class="stacked-actions"><button id="settingsExport" class="secondary-btn">Export all data</button><button id="settingsDeleteFriends" class="ghost-btn">Delete friend data</button><button id="settingsDeleteAll" class="danger-btn">Delete all PickleRate data</button></div><p class="privacy-note">This prototype stores data in this browser using localStorage. It does not create an online account or sync between devices.</p></article>`;
+ $('saveSettings').onclick=()=>{const next={...s,name:$('settingName').value.trim(),goal:Number($('settingGoal').value)||4,hand:$('settingHand').value,environment:$('settingEnvironment').value,theme:$('settingDark').checked?'dark':'light',compactNav:$('settingCompact').checked};saveSettingsState(next);$('saveSettings').textContent='Saved ✓'};
+ $('settingDark').onchange=()=>{const next={...settingsState(),theme:$('settingDark').checked?'dark':'light'};saveSettingsState(next)};
+ $('settingCompact').onchange=()=>{const next={...settingsState(),compactNav:$('settingCompact').checked};saveSettingsState(next)};
+ $('settingsExport').onclick=()=>downloadBlob(JSON.stringify({exportedAt:new Date().toISOString(),settings:settingsState(),history:getHistory(),practice:practiceState(),friends:friendsState()},null,2),'PickleRate-all-data.json','application/json');
+ $('settingsDeleteFriends').onclick=()=>{if(confirm('Delete all imported friend profiles?')){localStorage.removeItem(FRIENDS_KEY);renderSettings()}};
+ $('settingsDeleteAll').onclick=()=>{if(confirm('Delete all PickleRate assessments, practice progress, friends and settings from this browser?')){[STORAGE_KEY,HISTORY_KEY,PRACTICE_KEY,FRIENDS_KEY,SETTINGS_KEY].forEach(k=>localStorage.removeItem(k));location.hash='#home';location.reload()}};
+}

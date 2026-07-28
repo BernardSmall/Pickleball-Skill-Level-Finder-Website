@@ -17,13 +17,15 @@
       <span class="brand-mark">P</span><span>PickleRate</span>
     </a>
     <nav class="main-nav" aria-label="Main navigation">
-      <button data-route="landingView" class="nav-link active">Home</button>
-      <button data-action="start" class="nav-link">Assessment</button>
-      <button id="historyHeaderBtn" data-route="historyView" class="nav-link">My Journey</button>
-      <button data-route="insightsView" class="nav-link">Insights</button>
-      <button data-route="skillsView" class="nav-link">Skills</button>
-      <button data-route="practiceView" class="nav-link">Practice Hub</button>
-      <button data-route="aboutView" class="nav-link">About</button>
+      <button data-route="landingView" class="nav-link active">🏠 <span>Home</span></button>
+      <button data-action="start" class="nav-link">📝 <span>Assessment</span></button>
+      <button id="historyHeaderBtn" data-route="historyView" class="nav-link">📈 <span>My Journey</span></button>
+      <button data-route="insightsView" class="nav-link">🧠 <span>Insights</span></button>
+      <button data-route="skillsView" class="nav-link">🎯 <span>Skills</span></button>
+      <button data-route="practiceView" class="nav-link">🏋️ <span>Practice Hub</span></button>
+      <button data-route="compareFriendsView" class="nav-link">👥 <span>Compare Friends</span></button>
+      <button data-route="drillLibraryView" class="nav-link">📚 <span>Drill Library</span></button>
+      <button data-route="settingsView" class="nav-link">⚙️ <span>Settings</span></button>
     </nav>
     <div class="header-actions">
       <button id="mobileMenuBtn" class="icon-btn mobile-menu" type="button" aria-label="Toggle navigation">☰</button>
@@ -215,6 +217,28 @@
     <section id="practiceSkillView" class="view practice-skill-view hidden">
       <button id="backToPracticeBtn" class="text-btn" type="button">← Back to Practice Hub</button>
       <div id="practiceSkillDetail"></div>
+    </section>
+
+
+    <section id="compareFriendsView" class="view compare-friends-view hidden">
+      <div class="page-heading"><span class="eyebrow">COMPARE FRIENDS</span><h1>Train better together</h1><p>Create a compact share code from your latest assessment, import a friend's code, and compare strengths, gaps and shared practice priorities. Codes contain assessment data, so only share them with people you trust.</p></div>
+      <div id="compareFriendsApp"></div>
+    </section>
+
+    <section id="drillLibraryView" class="view drill-library-view hidden">
+      <div class="page-heading"><span class="eyebrow">DRILL LIBRARY</span><h1>Find the right drill for every skill</h1><p>Browse structured drills by skill, difficulty and training purpose. Your Practice Hub chooses drills for you; this library lets you explore everything available.</p></div>
+      <div class="library-toolbar glass-card">
+        <label class="search-field">Search drills<input id="drillSearch" type="search" placeholder="Search drops, resets, pressure…"></label>
+        <label>Category<select id="drillCategory"><option value="all">All categories</option></select></label>
+        <label>Difficulty<select id="drillDifficulty"><option value="all">All difficulties</option><option>Foundation</option><option>Pressure</option><option>Match transfer</option></select></label>
+      </div>
+      <div id="drillLibraryGrid" class="drill-library-grid"></div>
+    </section>
+
+    <section id="settingsView" class="view settings-view hidden">
+      <div class="page-heading"><span class="eyebrow">SETTINGS</span><h1>Make PickleRate yours</h1><p>Manage your local profile, development goal, appearance, reminders and saved browser data.</p></div>
+      <div id="settingsApp" class="settings-grid"></div>
+      <div class="about-link-card glass-card"><div><span class="eyebrow">ABOUT PICKLERATE</span><h2>Philosophy, methodology and FAQs</h2></div><button class="secondary-btn" data-route="aboutView">Open About</button></div>
     </section>
 
     <section id="aboutView" class="view about-view hidden">
