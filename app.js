@@ -138,3 +138,118 @@ const originalShowHistoryDetail=showHistoryDetail;
 showHistoryDetail=function(id){originalShowHistoryDetail(id);history.replaceState({view:'historyDetailView',id},'',`#journey-detail`)};
 window.openTester=openTester;
 setupAppNavigation();
+
+// Professional product experience additions.
+APP_VIEWS.push('skillsView','skillDetailView');
+const extendedViewToHash={skillsView:'#skills',skillDetailView:'#skill-detail'};
+const baseViewToHash=viewToHash;
+viewToHash=function(id){return extendedViewToHash[id]||baseViewToHash(id)};
+const baseHashToView=hashToView;
+hashToView=function(){return ({'#skills':'skillsView','#skill-detail':'skillDetailView'})[location.hash]||baseHashToView()};
+
+const originalEnhancedSwitchView=switchView;
+switchView=function(id){
+  originalEnhancedSwitchView(id);
+  if(id==='skillsView')renderSkillsDirectory();
+};
+
+const baseRenderResults=renderResults;
+renderResults=function(r){
+  baseRenderResults(r);
+  renderResultSummary(r);
+  renderStrengthRadar(r);
+};
+
+function renderResultSummary(r){
+  const host=$('resultSummaryCards'); if(!host)return;
+  const cards=[['Estimated rating',r.overall.toFixed(2)],['Confidence',`${r.confidence}%`],['Technical',r.pillars['Technical Ability'].toFixed(2)],['Tactical',r.pillars['Tactical Intelligence'].toFixed(2)],['Competition',r.pillars['Competitive Validation'].toFixed(2)]];
+  host.innerHTML=cards.map(([label,value],i)=>`<div class="result-summary-card ${i===0?'primary':''}"><span>${label}</span><strong>${value}</strong></div>`).join('');
+}
+
+function radarGroups(r){
+  const groups={Serve:[],Return:[],Drops:[],Kitchen:[],Defence:[],Attack:[],Strategy:[],Pressure:[]};
+  Object.entries(r.skills||{}).forEach(([name,data])=>{
+    const n=name.toLowerCase();
+    if(n.includes('serve'))groups.Serve.push(data.score);
+    else if(n.includes('return'))groups.Return.push(data.score);
+    else if(n.includes('drop')||n.includes('third')||n.includes('fifth'))groups.Drops.push(data.score);
+    else if(n.includes('dink')||n.includes('kitchen'))groups.Kitchen.push(data.score);
+    else if(n.includes('reset')||n.includes('block')||n.includes('defen'))groups.Defence.push(data.score);
+    else if(n.includes('attack')||n.includes('speed')||n.includes('counter'))groups.Attack.push(data.score);
+    else if(n.includes('position')||n.includes('target')||n.includes('pattern')||n.includes('adapt')||n.includes('selection'))groups.Strategy.push(data.score);
+    else if(n.includes('pressure')||n.includes('consisten')||n.includes('error')||n.includes('tournament'))groups.Pressure.push(data.score);
+  });
+  Object.keys(groups).forEach(k=>{if(!groups[k].length)groups[k]=[r.overall]});
+  return Object.fromEntries(Object.entries(groups).map(([k,v])=>[k,v.reduce((a,b)=>a+b,0)/v.length]));
+}
+function renderStrengthRadar(r){
+  const host=$('strengthRadar');if(!host)return;
+  const data=radarGroups(r),labels=Object.keys(data),values=Object.values(data),cx=170,cy=170,maxR=125;
+  const point=(i,val)=>{const a=-Math.PI/2+i*2*Math.PI/labels.length,rad=maxR*(val/5);return[cx+Math.cos(a)*rad,cy+Math.sin(a)*rad]};
+  const ring=n=>labels.map((_,i)=>point(i,n).join(',')).join(' ');
+  const polygon=values.map((v,i)=>point(i,v).join(',')).join(' ');
+  host.innerHTML=`<svg viewBox="0 0 340 340" role="img" aria-label="Skill strength radar">${[1,2,3,4,5].map(n=>`<polygon class="radar-ring" points="${ring(n)}"></polygon>`).join('')}${labels.map((_,i)=>{const p=point(i,5);return`<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}"></line>`}).join('')}<polygon class="radar-shape" points="${polygon}"></polygon>${labels.map((l,i)=>{const a=-Math.PI/2+i*2*Math.PI/labels.length,x=cx+Math.cos(a)*153,y=cy+Math.sin(a)*153;return`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${l}</text>`}).join('')}</svg><div class="radar-legend">${labels.map(l=>`<span><b>${l}</b>${data[l].toFixed(1)}</span>`).join('')}</div>`;
+}
+
+const baseRenderHistory=renderHistory;
+renderHistory=function(){
+  baseRenderHistory();
+  renderJourneyCompare();renderJourneyTimeline();renderJourneyAchievements();
+};
+function assessmentName(r,index,total){return r.label||`Assessment #${total-index}`}
+function renderJourneyCompare(){
+  const host=$('journeyCompare');if(!host)return;const h=getHistory();
+  if(h.length<2){host.innerHTML='<article class="detail-card journey-section"><span class="eyebrow">COMPARE ASSESSMENTS</span><h2>Unlock comparisons after assessment two</h2><p>Complete another assessment after focused practice to see exactly which skills changed.</p></article>';return}
+  const opts=h.map((r,i)=>`<option value="${r.id}">${assessmentName(r,i,h.length)} · ${r.results.overall.toFixed(2)} · ${new Date(r.createdAt).toLocaleDateString('en-ZA')}</option>`).join('');
+  host.innerHTML=`<article class="detail-card journey-section"><div class="section-heading"><div><span class="eyebrow">COMPARE ASSESSMENTS</span><h2>See what changed</h2></div><div class="compare-selects"><select id="compareA">${opts}</select><span>vs</span><select id="compareB">${opts}</select></div></div><div id="comparisonOutput"></div></article>`;
+  $('compareA').value=h[h.length-1].id;$('compareB').value=h[0].id;
+  $('compareA').onchange=renderComparisonOutput;$('compareB').onchange=renderComparisonOutput;renderComparisonOutput();
+}
+function renderComparisonOutput(){
+  const h=getHistory(),a=h.find(x=>x.id===$('compareA')?.value),b=h.find(x=>x.id===$('compareB')?.value),host=$('comparisonOutput');if(!a||!b||!host)return;
+  const names=[...new Set([...Object.keys(a.results.skills||{}),...Object.keys(b.results.skills||{})])];
+  const changes=names.map(name=>({name,change:(b.results.skills?.[name]?.score||0)-(a.results.skills?.[name]?.score||0)})).filter(x=>a.results.skills?.[x.name]&&b.results.skills?.[x.name]).sort((x,y)=>Math.abs(y.change)-Math.abs(x.change));
+  const biggest=changes.filter(x=>x.change>0).sort((x,y)=>y.change-x.change)[0];
+  host.innerHTML=`<div class="compare-overview"><div><span>Rating</span><strong>${a.results.overall.toFixed(2)} → ${b.results.overall.toFixed(2)}</strong><small class="${b.results.overall-a.results.overall>=0?'up':'down'}">${signed(b.results.overall-a.results.overall)}</small></div><div><span>Biggest improvement</span><strong>${biggest?.name||'No increase yet'}</strong><small>${biggest?`${Math.round(biggest.change/5*100)}% of scale`:''}</small></div></div><div class="comparison-list">${changes.slice(0,10).map(x=>`<div><span>${x.name}</span><b class="${x.change>0?'up':x.change<0?'down':'flat'}">${x.change>0?'▲':x.change<0?'▼':'▬'} ${signed(x.change)}</b></div>`).join('')}</div>`;
+}
+function signed(v){return`${v>=0?'+':''}${v.toFixed(2)}`}
+function renderJourneyTimeline(){
+  const host=$('journeyTimeline');if(!host)return;const h=[...getHistory()].reverse();if(!h.length){host.innerHTML='';return}
+  host.innerHTML=`<article class="detail-card journey-section"><span class="eyebrow">TIMELINE</span><h2>Your development story</h2><div class="timeline-list">${h.map((r,i)=>{const prev=h[i-1],delta=prev?r.results.overall-prev.results.overall:0;const best=Object.entries(r.results.skills||{}).sort((a,b)=>b[1].score-a[1].score)[0];return`<div class="timeline-event"><span class="timeline-dot"></span><time>${new Date(r.createdAt).toLocaleDateString('en-ZA',{month:'short',year:'numeric'})}</time><div><h3>${assessmentName(r,h.length-1-i,h.length)} · ${r.results.overall.toFixed(2)}</h3><p>${i===0?'Started the PickleRate journey.':`${delta>=0?'Improved':'Changed'} ${signed(delta)} overall.`} ${best?`${best[0]} was the strongest measured skill.`:''}</p></div></div>`}).join('')}</div></article>`;
+}
+function renderJourneyAchievements(){
+  const host=$('journeyAchievements');if(!host)return;const h=getHistory();if(!h.length){host.innerHTML='';return}
+  const latest=h[0],allSkills=Object.values(latest.results.skills||{}),ach=[
+    ['First assessment',h.length>=1,'Completed a baseline profile'],['10 assessments',h.length>=10,`${h.length}/10 completed`],['Confidence above 90%',h.some(r=>r.results.confidence>=90),`Best: ${Math.max(...h.map(r=>r.results.confidence))}%`],['Reached 3.5',h.some(r=>r.results.overall>=3.5),`Best: ${Math.max(...h.map(r=>r.results.overall)).toFixed(2)}`],['Improved third shot',hasSkillImprovement(h,'drop'), 'Compared with your baseline'],['No weak skills',allSkills.length>0&&allSkills.every(x=>x.score>=3), 'Every measured skill at 3.0+']];
+  host.innerHTML=`<article class="detail-card journey-section"><span class="eyebrow">ACHIEVEMENTS</span><h2>Milestones along the way</h2><div class="achievement-grid">${ach.map(([name,on,desc])=>`<div class="achievement ${on?'unlocked':'locked'}"><span>${on?'✓':'○'}</span><div><b>${name}</b><small>${desc}</small></div></div>`).join('')}</div></article>`;
+}
+function hasSkillImprovement(h,term){if(h.length<2)return false;const first=h[h.length-1],latest=h[0];return Object.keys(latest.results.skills||{}).some(n=>n.toLowerCase().includes(term)&&(latest.results.skills[n]?.score||0)>(first.results.skills[n]?.score||0)+.15)}
+
+function renderSkillsDirectory(){
+  const host=$('skillsDirectory');if(!host)return;const h=getHistory(),latest=h[0];
+  if(!latest){host.innerHTML='<article class="detail-card empty-insights"><h2>Complete an assessment to unlock skill pages</h2><p>Your skill library will use your latest profile and historical assessment data.</p><button class="primary-btn" onclick="openTester(false)">Start assessment →</button></article>';return}
+  const skills=Object.entries(latest.results.skills||{}).sort((a,b)=>b[1].score-a[1].score);
+  host.innerHTML=skills.map(([name,d])=>`<button class="skill-directory-card" data-skill="${encodeURIComponent(name)}"><span class="skill-icon">${name.charAt(0)}</span><div><b>${name}</b><small>${d.pillar} · ${d.count} evidence item${d.count===1?'':'s'}</small><div class="tiny-bar"><i style="width:${d.score/5*100}%"></i></div></div><strong>${d.score.toFixed(2)}</strong><span>→</span></button>`).join('');
+  host.querySelectorAll('[data-skill]').forEach(btn=>btn.onclick=()=>showSkillDetail(decodeURIComponent(btn.dataset.skill)));
+}
+function showSkillDetail(name){
+  const h=[...getHistory()].reverse(),latest=h[h.length-1],data=latest?.results.skills?.[name];if(!data)return;switchView('skillDetailView');history.replaceState({view:'skillDetailView'},'','#skill-detail');
+  const trend=h.filter(r=>r.results.skills?.[name]).map(r=>({date:new Date(r.createdAt),score:r.results.skills[name].score}));
+  const relevant=questions.filter(q=>meta[q.id]?.[1]===name);const target=Math.min(5,Math.floor(latest.results.overall*2+1)/2);const needed=Math.max(0,target-data.score);const drill=drills[name]||['Focused repetition',`Use a repeatable 10-ball test for ${name.toLowerCase()} and record your success rate.`];
+  $('skillDetail').innerHTML=`<div class="skill-detail-hero detail-card"><div><span class="eyebrow">${escapeHtml(data.pillar)}</span><h1>${escapeHtml(name)}</h1><p>${skillExplanation(name,data.score)}</p></div><div class="skill-current"><span>Current</span><strong>${data.score.toFixed(2)}</strong><small>${trend.length>1?signed(trend[trend.length-1].score-trend[0].score)+' from baseline':'Baseline established'}</small></div></div><div class="detail-grid"><article class="detail-card"><h2>Past assessments</h2><div class="skill-trend-chart">${trend.map(t=>`<div><b>${t.score.toFixed(2)}</b><i style="height:${Math.max(12,t.score/5*150)}px"></i><small>${t.date.toLocaleDateString('en-ZA',{day:'numeric',month:'short'})}</small></div>`).join('')}</div></article><article class="detail-card"><h2>Benchmark toward ${target.toFixed(1)}</h2><div class="benchmark-meter"><i style="width:${Math.min(100,data.score/target*100)}%"></i></div><h3>${needed<=.05?'Already supporting this milestone':`Approximately ${needed.toFixed(2)} skill points to close`}</h3><p>${benchmarkText(name,data.score,target)}</p></article><article class="detail-card"><h2>Recommended drill</h2>${drillHtml(name,data.score)}<div class="practice-target"><b>Measurable target</b><p>${drill[1]}</p></div></article><article class="detail-card"><h2>Supporting questions</h2><div class="supporting-questions">${relevant.map(q=>`<div><b>${escapeHtml(q.text)}</b><p>${escapeHtml(q.help||'This observation contributes to the skill estimate.')}</p></div>`).join('')||'<p>No direct questions found in this version.</p>'}</div></article></div>`;
+}
+function skillExplanation(name,score){return`${name} currently scores ${score.toFixed(1)} out of 5. This page combines the supporting observations from your latest assessment with its change across saved reports.`}
+function benchmarkText(name,score,target){if(score>=target)return`${name} is already at or above the current ${target.toFixed(1)} benchmark. Maintain it while improving lower-scoring areas.`;return`This is a directional development benchmark, not a promise that one skill increase alone will produce a ${target.toFixed(1)} overall rating. Aim for repeatable match transfer, not drill success only.`}
+$('backToSkillsBtn')?.addEventListener('click',()=>routeTo('skillsView'));
+
+const baseRenderJourneyInsights=renderJourneyInsights;
+renderJourneyInsights=function(){
+  baseRenderJourneyInsights();
+  const host=$('journeyInsights'),h=[...getHistory()].reverse();if(!host||!h.length)return;
+  const latest=h[h.length-1],first=h[0],groupsNow=radarGroups(latest.results),groupsFirst=radarGroups(first.results);
+  const narratives=Object.keys(groupsNow).map(k=>({name:k,change:groupsNow[k]-groupsFirst[k],score:groupsNow[k]})).sort((a,b)=>b.change-a.change);
+  const improving=narratives[0],plateau=narratives.slice().sort((a,b)=>Math.abs(a.change)-Math.abs(b.change))[0],weak=narratives.slice().sort((a,b)=>a.score-b.score)[0];
+  host.insertAdjacentHTML('afterbegin',`<article class="detail-card intelligent-summary"><span class="eyebrow">PROFILE NARRATIVE</span><h2>${h.length<2?'Your baseline is ready':'What your recent assessments suggest'}</h2><p>${h.length<2?`Your first assessment establishes a ${latest.results.overall.toFixed(2)} baseline. Reassess after focused practice to unlock trend interpretation.`:`Across ${h.length} assessments, ${improving.name.toLowerCase()} changed the most (${signed(improving.change)}). ${plateau.name} has remained comparatively stable, while ${weak.name.toLowerCase()} is currently the lowest broad area at ${weak.score.toFixed(2)}.`}</p><p class="insight-disclaimer">These insights are deterministic summaries of your saved answers, not medical, coaching or official rating advice.</p></article>`);
+}
+
+window.showSkillDetail=showSkillDetail;

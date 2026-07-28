@@ -21,6 +21,7 @@
       <button data-action="start" class="nav-link">Assessment</button>
       <button id="historyHeaderBtn" data-route="historyView" class="nav-link">My Journey</button>
       <button data-route="insightsView" class="nav-link">Insights</button>
+      <button data-route="skillsView" class="nav-link">Skills</button>
       <button data-route="aboutView" class="nav-link">About</button>
     </nav>
     <div class="header-actions">
@@ -65,6 +66,12 @@
           <div><strong>1</strong><span>Focused improvement plan</span></div>
         </section>
         <section class="how-card glass-card"><span class="eyebrow">HOW IT WORKS</span><h2>More than a rating quiz</h2><div class="how-grid"><div><b>1</b><h3>Describe recent play</h3><p>Answer observable questions based on normal competitive performance.</p></div><div><b>2</b><h3>Build a skill profile</h3><p>Related evidence estimates execution, decisions and competitive transfer.</p></div><div><b>3</b><h3>Improve with purpose</h3><p>Receive explanations, priorities and drills linked to your weakest skills.</p></div></div></section>
+        <section class="product-flow glass-card">
+          <span class="flow-step">Questions</span><span>→</span><span class="flow-step">Skills</span><span>→</span><span class="flow-step">Rating</span><span>→</span><span class="flow-step">Training plan</span>
+        </section>
+        <section class="testimonial-placeholder glass-card">
+          <span class="eyebrow">TESTIMONIALS</span><h2>Real player feedback will live here</h2><p>Once calibration testing begins, verified player and coach feedback can be added without inventing endorsements.</p>
+        </section>
       </div>
     </section>
 
@@ -132,6 +139,8 @@
         <p>Your estimate combines execution, decision-making and competitive evidence. Competitive experience validates the result but does not unfairly overpower technical ability.</p>
       </div>
 
+      <div id="resultSummaryCards" class="result-summary-cards"></div>
+      <article class="radar-card glass-card"><div class="card-heading"><div><span class="eyebrow">STRENGTH RADAR</span><h2>Your game at a glance</h2></div></div><div id="strengthRadar" class="strength-radar"></div></article>
       <div class="results-grid">
         <article class="overall-card glass-card">
           <div class="score-ring" id="scoreRing"><div><span>Estimated level</span><strong id="overallRating">—</strong><small id="levelLabel">—</small></div></div>
@@ -173,6 +182,9 @@
     <section id="historyView" class="view history-view hidden">
       <div class="history-heading"><div><span class="eyebrow">MY JOURNEY</span><h1>Your PickleRate journey</h1><p>Each card is a saved snapshot. Open one to revisit its original scores, explanations, answers and drills.</p></div><div class="history-actions"><button id="exportHistoryCsvBtn" class="secondary-btn">Export CSV</button><button id="exportHistoryJsonBtn" class="secondary-btn">Export JSON</button><button id="clearHistoryBtn" class="ghost-btn">Clear history</button></div></div>
       <div id="historySummary" class="history-summary"></div>
+      <section id="journeyCompare" class="journey-compare"></section>
+      <section id="journeyTimeline" class="journey-timeline"></section>
+      <section id="journeyAchievements" class="journey-achievements"></section>
       <div id="historyList" class="history-list"></div>
     </section>
 
@@ -180,6 +192,16 @@
     <section id="insightsView" class="view insights-view hidden">
       <div class="page-heading"><span class="eyebrow">LONG-TERM INSIGHTS</span><h1>See how your game is changing</h1><p>Insights combine your saved assessments to reveal trends, persistent strengths and the areas offering the greatest return on practice.</p></div>
       <div id="journeyInsights"></div>
+    </section>
+
+    <section id="skillsView" class="view skills-view hidden">
+      <div class="page-heading"><span class="eyebrow">SKILL LIBRARY</span><h1>Understand every part of your game</h1><p>Open a skill to see its current score, historical trend, supporting questions, recommended drill and benchmark toward the next rating milestone.</p></div>
+      <div id="skillsDirectory" class="skills-directory"></div>
+    </section>
+
+    <section id="skillDetailView" class="view skill-detail-view hidden">
+      <button id="backToSkillsBtn" class="text-btn" type="button">← Back to skills</button>
+      <div id="skillDetail"></div>
     </section>
 
     <section id="aboutView" class="view about-view hidden">
@@ -191,6 +213,15 @@
         <article class="glass-card about-card"><strong class="about-percent">10%</strong><h2>Competitive Validation</h2><p>Evidence that your skills hold up under pressure, stronger opponents and unfamiliar partners.</p></article>
         <article class="glass-card about-card wide"><span class="eyebrow">CONFIDENCE</span><h2>How well does the evidence agree?</h2><p>Confidence reflects answer completeness, agreement among related skills and the amount of competitive evidence available. Limited tournament experience should lower certainty—not automatically lower your technical rating.</p></article>
         <article class="glass-card about-card wide"><span class="eyebrow">WHY MULTIPLE QUESTIONS?</span><h2>Important skills need more than one observation</h2><p>A third-shot profile can include overall drop success, forehand and backhand execution, adjustment to difficult returns and fifth-shot control. Agreement across these observations creates a stronger estimate than any single question.</p></article>
+        <article class="glass-card about-card wide methodology-card"><span class="eyebrow">METHODOLOGY</span><h2>From observations to an explained estimate</h2><div class="method-flow"><span>43 observations</span><b>→</b><span>20+ skills</span><b>→</b><span>3 pillars</span><b>→</b><span>Confidence model</span><b>→</b><span>Estimated rating</span></div><p>Every saved report stores its original answers and calculated scores so it remains a frozen historical snapshot.</p></article>
+        <article class="glass-card about-card wide"><span class="eyebrow">FREQUENTLY ASKED QUESTIONS</span><h2>Questions players may have</h2><div class="faq-list">
+          <details open><summary>Can I trust my rating?</summary><p>Use it as an evidence-based estimate and development guide, not an official replacement for match-based systems or a qualified coach.</p></details>
+          <details><summary>Why does confidence matter?</summary><p>Confidence indicates how complete and internally consistent the evidence is. A similar rating can be supported strongly or weakly.</p></details>
+          <details><summary>Why are there 43 questions?</summary><p>Important skills need several observations. This reduces the influence of one misunderstood question or unusually good session.</p></details>
+          <details><summary>Why is DUPR not used directly?</summary><p>DUPR can be entered as calibration information. PickleRate is designed to explain skills and development areas rather than reproduce a match-rating system.</p></details>
+          <details><summary>Can beginners use it?</summary><p>Yes. Newer players should treat low-confidence results as a baseline and reassess after gaining more match experience.</p></details>
+          <details><summary>How often should I reassess?</summary><p>Reassess after a meaningful block of practice and match play—typically every two to four weeks rather than after every session.</p></details>
+        </div></article>
         <article class="glass-card about-card wide"><span class="eyebrow">ROADMAP</span><h2>Built to improve with real evidence</h2><div class="roadmap-tags"><span>Calibration data</span><span>Adaptive questions</span><span>Coach mode</span><span>Video analysis</span><span>Partner assessment</span><span>Tournament tracking</span></div></article>
       </div>
     </section>
