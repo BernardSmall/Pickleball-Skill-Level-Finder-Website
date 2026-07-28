@@ -1,277 +1,137 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>PickleRate | Pickleball Self-Assessment</title>
-<link href="css/styles.css" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PickleRate evidence-based pickleball self-assessment." />
+  <title>PickleRate — Know Your Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header class="site-header">
-<div class="brand">
-<span class="brand-mark">P</span>
-<span>PickleRate</span>
-</div>
-<nav class="site-nav">
-<button data-page="home" type="button">Home</button>
-<button data-page="assessment" type="button">Assessment</button>
-<button data-page="history" type="button">History</button>
-<button data-page="about" type="button">About</button>
-</nav>
-</header>
-<main>
-<section class="page-section hero" id="homePage">
-<div>
-<div class="eyebrow">Evidence-based pickleball self-assessment</div>
-<h1>
-                    Find your real
-                    <span>pickleball level.</span>
-</h1>
-<p class="hero-description">
-                    Answer practical questions about your consistency, shot selection,
-                    defensive ability, positioning and competitive performance.
-                    PickleRate estimates your current level and shows exactly what
-                    is holding your game back.
-                </p>
-<div class="hero-actions">
-<button class="primary-button" id="startAssessmentButton" type="button">
-                        Start full assessment
-                    </button>
-<button class="secondary-button" id="viewHistoryButton" type="button">
-                        View saved results
-                    </button>
-</div>
-<div class="feature-list">
-<div class="feature-item">
-<span class="feature-icon">✓</span>
-<span>43 evidence-based questions</span>
-</div>
-<div class="feature-item">
-<span class="feature-icon">✓</span>
-<span>Eight skill categories</span>
-</div>
-<div class="feature-item">
-<span class="feature-icon">✓</span>
-<span>Estimated rating and range</span>
-</div>
-<div class="feature-item">
-<span class="feature-icon">✓</span>
-<span>Personal practice recommendations</span>
-</div>
-</div>
-</div>
-<aside class="hero-card">
-<div class="rating-preview">
-<div class="preview-label">Example result</div>
-<div class="preview-rating">3.72</div>
-<div class="preview-range">Likely range: 3.50–4.00</div>
-<div class="preview-bars">
-<div>
-<div class="preview-bar-heading">
-<span>Serve and return</span>
-<span>82%</span>
-</div>
-<div class="bar-track">
-<div class="bar-fill" style="width: 82%"></div>
-</div>
-</div>
-<div>
-<div class="preview-bar-heading">
-<span>Kitchen play</span>
-<span>76%</span>
-</div>
-<div class="bar-track">
-<div class="bar-fill" style="width: 76%"></div>
-</div>
-</div>
-<div>
-<div class="preview-bar-heading">
-<span>Resets and defence</span>
-<span>58%</span>
-</div>
-<div class="bar-track">
-<div class="bar-fill" style="width: 58%"></div>
-</div>
-</div>
-</div>
-<div class="home-note">
-                        PickleRate is a self-assessment tool. It does not replace an
-                        official DUPR, tournament or governing-body rating.
-                    </div>
-</div>
-</aside>
-</section>
-<section class="page-section hidden" id="assessmentPage">
-<div class="assessment-wrapper">
-<div class="assessment-header">
-<div class="assessment-meta">
-<span id="questionCounter">Question 1 of 43</span>
-<span id="progressPercentage">2%</span>
-</div>
-<div class="progress-track">
-<div class="progress-fill" id="progressFill"></div>
-</div>
-</div>
-<article class="question-card">
-<span class="question-category" id="questionCategory"></span>
-<h2 id="questionText"></h2>
-<p class="question-help" id="questionHelp"></p>
-<div class="answer-options" id="answerOptions"></div>
-<div aria-live="polite" class="validation-message" id="validationMessage"></div>
-</article>
-<div class="assessment-actions">
-<button class="secondary-button" id="previousButton" type="button">
-                        Previous
-                    </button>
-<button class="primary-button" id="nextButton" type="button">
-                        Next
-                    </button>
-</div>
-</div>
-</section>
-<section class="page-section hidden" id="resultsPage">
-<div class="results-wrapper">
-<div class="results-heading">
-<div class="eyebrow">Your assessment result</div>
-<h1>Your PickleRate profile</h1>
-<p>
-                        Your estimate is based on your reported consistency,
-                        execution, shot selection and competitive performance.
-                    </p>
-</div>
-<div class="rating-summary">
-<article class="result-card rating-card">
-<h2>Estimated rating</h2>
-<div class="rating-number" id="finalRating">3.50</div>
-<div class="rating-level" id="finalLevel">Competitive 3.5</div>
-<div class="rating-range" id="finalRange">
-                            Likely range: 3.25–3.75
-                        </div>
-<div class="confidence-wrapper">
-<div class="confidence-heading">
-<span>Assessment confidence</span>
-<span id="confidenceValue">75%</span>
-</div>
-<div class="bar-track">
-<div class="bar-fill" id="confidenceBar" style="width: 75%"></div>
-</div>
-</div>
-</article>
-<article class="result-card">
-<h3>Skill breakdown</h3>
-<div class="category-list" id="categoryResults"></div>
-</article>
-</div>
-<div class="insight-grid">
-<article class="result-card">
-<h3>Your strongest areas</h3>
-<ul class="insight-list strength-list" id="strengthList"></ul>
-</article>
-<article class="result-card">
-<h3>Development priorities</h3>
-<ul class="insight-list priority-list" id="priorityList"></ul>
-</article>
-</div>
-<article class="result-card result-explanation">
-<h3>What your result means</h3>
-<p id="resultExplanation"></p>
-</article>
-<article class="result-card result-explanation">
-<h3>Assessment quality checks</h3>
-<p id="scoringDiagnostics"></p>
-</article>
-<section class="training-plan">
-<div class="page-heading">
-<h2>Recommended practice session</h2>
-<p class="section-description">
-                            These drills are selected from your three lowest-scoring categories.
-                        </p>
-</div>
-<div class="drill-grid" id="drillResults"></div>
-</section>
-<div class="results-actions">
-<button class="primary-button" id="retakeButton" type="button">
-                        Retake assessment
-                    </button>
-<button class="secondary-button" id="historyFromResultsButton" type="button">
-                        View history
-                    </button>
-<button class="secondary-button" id="returnHomeButton" type="button">
-                        Return home
-                    </button>
-</div>
-</div>
-</section>
-<section class="page-section hidden" id="historyPage">
-<div class="history-wrapper">
-<div class="page-heading">
-<div class="eyebrow">Saved locally on this device</div>
-<h1>Assessment history</h1>
-<p class="section-description">
-                        Compare previous results and track how your estimated level changes over time.
-                    </p>
-</div>
-<div class="stats-grid" id="historyStats"></div>
-<div class="history-list" id="historyList"></div>
-<div class="history-actions" style="margin-top: 24px;">
-<button class="primary-button" id="historyStartButton" type="button">
-                        Start new assessment
-                    </button>
-<button class="danger-button" id="clearHistoryButton" type="button">
-                        Clear saved history
-                    </button>
-</div>
-</div>
-</section>
-<section class="page-section hidden" id="aboutPage">
-<div class="about-wrapper">
-<div class="page-heading">
-<div class="eyebrow">How PickleRate works</div>
-<h1>About the assessment</h1>
-<p class="section-description">
-                        PickleRate is designed to reward repeatable match performance rather than
-                        confidence, knowledge of advanced shots or isolated practice success.
-                    </p>
-</div>
-<div class="about-grid">
-<article class="about-card">
-<h3>Evidence-based questions</h3>
-<p>
-                            Questions focus on measurable outcomes such as successful drops,
-                            deep returns, controlled dinks, effective resets and competitive rally performance.
-                        </p>
-</article>
-<article class="about-card">
-<h3>Weighted categories</h3>
-<p>
-                            Every question now has importance, difficulty and reliability metadata.
-                            Core skills carry more evidence than specialist shots, while difficult skills
-                            provide only controlled extra credit when the foundations support them.
-                        </p>
-</article>
-<article class="about-card">
-<h3>Estimated range</h3>
-<p>
-                            The website provides a likely range because no self-assessment can identify
-                            an exact competitive rating with perfect accuracy.
-                        </p>
-</article>
-<article class="about-card">
-<h3>Saved progress</h3>
-<p>
-                            Completed assessments are stored only in your browser using local storage.
-                            No account or server is required for this version.
-                        </p>
-</article>
-</div>
-</div>
-</section>
-</main>
-<footer class="footer">
-        PickleRate Stage 2 — intelligent weighted scoring engine. Results are estimates only.
-    </footer>
+  <div class="bg-orb orb-one"></div><div class="bg-orb orb-two"></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="PickleRate home">
+      <span class="brand-mark">P</span><span>PickleRate</span>
+    </a>
+    <button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button>
+  </header>
 
-<script defer="" src="js/questions.js"></script><script defer="" src="js/drills.js"></script><script defer="" src="js/scoring.js"></script><script defer="" src="js/history.js"></script><script defer="" src="js/app.js"></script></body>
+  <main>
+    <section id="landingView" class="view landing-view">
+      <div class="hero-copy">
+        <span class="eyebrow">EVIDENCE-BASED PICKLEBALL ASSESSMENT</span>
+        <h1>Know your game.<br><span>Improve with purpose.</span></h1>
+        <p>Estimate your playing level, understand your strongest skills, and get focused improvement priorities—without reducing your game to one vague number.</p>
+        <div class="hero-actions">
+          <button id="startBtn" class="primary-btn" type="button">Start assessment <span>→</span></button>
+          <button id="resumeBtn" class="secondary-btn hidden" type="button">Resume assessment</button>
+        </div>
+        <p class="microcopy">43 questions · approximately 10–15 minutes · progress saves automatically</p>
+      </div>
+
+      <div class="hero-card glass-card">
+        <div class="mini-score-card">
+          <span class="mini-label">Estimated level</span>
+          <strong>3.8</strong>
+          <span class="confidence-pill">High confidence</span>
+        </div>
+        <div class="mini-bars">
+          <div><span>Technical ability</span><b>3.9</b><i style="--w:78%"></i></div>
+          <div><span>Tactical intelligence</span><b>3.7</b><i style="--w:74%"></i></div>
+          <div><span>Competitive validation</span><b>3.5</b><i style="--w:70%"></i></div>
+        </div>
+        <div class="mini-insight"><span>↑</span><div><b>Strongest area</b><p>Resets and defence</p></div></div>
+      </div>
+    </section>
+
+    <section id="assessmentView" class="view assessment-view hidden">
+      <div class="assessment-shell">
+        <aside class="assessment-sidebar glass-card">
+          <div>
+            <span class="eyebrow">YOUR ASSESSMENT</span>
+            <h2>Build your player profile</h2>
+            <p>Answer from recent competitive play, not your best-ever session.</p>
+          </div>
+          <div id="categoryList" class="category-list"></div>
+          <div class="sidebar-tip"><b>Better data, better rating</b><p>Choose the honest answer that describes your normal performance.</p></div>
+        </aside>
+
+        <section class="question-panel glass-card">
+          <div class="question-topbar">
+            <button id="backBtn" class="icon-btn" type="button" aria-label="Previous question">←</button>
+            <div class="progress-wrap">
+              <div class="progress-meta"><span id="progressText">Question 1 of 43</span><span id="progressPercent">2%</span></div>
+              <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
+            </div>
+            <button id="saveExitBtn" class="text-btn" type="button">Save & exit</button>
+          </div>
+
+          <div id="questionContent" class="question-content">
+            <div class="question-heading">
+              <span id="questionCategory" class="category-chip"></span>
+              <span id="evidenceChip" class="evidence-chip"></span>
+            </div>
+            <h2 id="questionText"></h2>
+            <p id="questionHelp" class="question-help"></p>
+            <div id="optionsList" class="options-list"></div>
+          </div>
+
+          <div class="question-footer">
+            <span id="autosaveText">Progress saved</span>
+            <button id="nextBtn" class="primary-btn" type="button" disabled>Next question <span>→</span></button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="resultsView" class="view results-view hidden">
+      <div class="results-intro">
+        <span class="eyebrow">YOUR PICKLERATE PROFILE</span>
+        <h1>Your game, explained.</h1>
+        <p>Your estimate combines execution, decision-making and competitive evidence. Competitive experience validates the result but does not unfairly overpower technical ability.</p>
+      </div>
+
+      <div class="results-grid">
+        <article class="overall-card glass-card">
+          <div class="score-ring" id="scoreRing"><div><span>Estimated level</span><strong id="overallRating">—</strong><small id="levelLabel">—</small></div></div>
+          <div class="confidence-box"><span>Confidence</span><strong id="confidenceScore">—</strong><p id="confidenceExplanation"></p></div>
+        </article>
+
+        <article class="pillar-card glass-card">
+          <div class="card-heading"><div><span class="eyebrow">THREE-PILLAR MODEL</span><h2>How your rating is built</h2></div></div>
+          <div id="pillarResults" class="pillar-results"></div>
+        </article>
+
+        <article class="skills-card glass-card">
+          <div class="card-heading"><div><span class="eyebrow">SKILL PROFILE</span><h2>Underlying abilities</h2></div><button id="toggleSkillsBtn" class="text-btn" type="button">Show all</button></div>
+          <div id="skillResults" class="skill-results"></div>
+        </article>
+
+        <article class="insights-card glass-card">
+          <div class="card-heading"><div><span class="eyebrow">COACHING INSIGHTS</span><h2>What to focus on</h2></div></div>
+          <div class="insight-columns">
+            <div><h3>Top strengths</h3><div id="strengthsList"></div></div>
+            <div><h3>Biggest opportunities</h3><div id="weaknessesList"></div></div>
+          </div>
+        </article>
+
+        <article class="evidence-card glass-card">
+          <div class="card-heading"><div><span class="eyebrow">ASSESSMENT QUALITY</span><h2>Evidence check</h2></div></div>
+          <div id="evidenceSummary" class="evidence-summary"></div>
+        </article>
+      </div>
+
+      <div class="results-actions">
+        <button id="retakeBtn" class="secondary-btn" type="button">Retake assessment</button>
+        <button id="downloadBtn" class="primary-btn" type="button">Download results <span>↓</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>PickleRate</span><p>Know your game. Improve with purpose.</p></footer>
+  <script src="app.js"></script>
+</body>
 </html>

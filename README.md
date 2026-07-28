@@ -1,28 +1,36 @@
-# PickleRate
+# PickleRate Website
 
-A browser-based pickleball self-assessment website.
+A standalone static website built around the three-pillar PickleRate model:
+
+- Technical Ability: 70%
+- Tactical Intelligence: 20%
+- Competitive Validation: 10%
 
 ## Run locally
 
-Open `index.html` in a browser. For the most reliable development experience, use a local server such as the VS Code Live Server extension.
+Browsers may block loading `questions.json` when opening `index.html` directly. Run the folder through a small local server:
 
-## Project structure
+```bash
+python -m http.server 8000
+```
 
-- `index.html` — page structure and content
-- `css/styles.css` — all visual styling and responsive rules
-- `js/questions.js` — question bank and answer options
-- `js/scoring.js` — Stage 2 scoring engine, metadata, confidence and insights
-- `js/drills.js` — drill library and drill rendering
-- `js/history.js` — localStorage history and expandable saved results
-- `js/app.js` — application state, navigation, assessment flow and UI events
-- `images/` — future images and question diagrams
-- `icons/` — future icons and favicons
-- `assets/` — other static files
+Then open `http://localhost:8000`.
 
-## Publish
+You can also deploy the folder directly to GitHub Pages, Netlify, Vercel or another static host.
 
-Upload the complete `PickleRate` folder to GitHub Pages, Netlify or another static host. The host must serve `index.html` from the project root.
+## Main features
 
-## Data storage
+- 43-question assessment
+- Saved progress using localStorage
+- One-question-at-a-time interface
+- Technical, tactical and competitive pillar scoring
+- Evidence-type trust weighting
+- Cross-question agreement and confidence score
+- Skill-level breakdown
+- Strength and improvement insights
+- Downloadable text results
+- Responsive desktop/mobile layout
 
-Assessment history is stored in the current browser using `localStorage`. It is not synced between devices and can be removed when browser data is cleared.
+## Important calibration note
+
+The weights and confidence rules are a strong first model, not a validated rating standard. Update thresholds and mappings after collecting results from players with reliable external ratings.
