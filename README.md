@@ -1,33 +1,29 @@
-# PickleRate
+# PickleRate Professional Prototype
 
-A browser-based pickleball self-assessment with an explainable three-pillar rating model.
+A static browser-based PickleRate application with:
 
-## Main sections
-
-- **Home** — product introduction and assessment overview
-- **Assessment** — optional tester profile and 43-question evaluation
-- **My Journey** — saved assessment cards and full historical reports
-- **Insights** — rating trends, strengths, priorities and skill changes
-- **About** — methodology, confidence scoring and roadmap
-
-Navigation uses browser history, so Back and Forward move smoothly between app sections. Completed assessments remain immutable snapshots in browser localStorage and can be exported as CSV or JSON.
+- Professional Home and product story
+- Full 43-question assessment
+- Tester/calibration profile
+- Rich results dashboard and strength radar
+- Frozen historical reports in My Journey
+- Assessment comparisons, timeline and achievements
+- Long-term deterministic insights
+- Skill library and individual skill pages
+- Directional benchmarks and recommended drills
+- Expanded About, methodology and FAQ
+- CSV/JSON history export
 
 ## Run locally
 
-Do not open `index.html` directly because the browser must load `questions.json`.
-
-From this folder run:
+From this folder:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open:
-
-```text
-http://localhost:8000
-```
+Open `http://localhost:8000`.
 
 ## Storage
 
-Assessment progress and history are stored locally in the current browser. Clearing browser storage removes saved data. Export history before clearing it.
+Assessment progress and completed reports are stored in browser `localStorage`. They remain on the same browser/device until cleared. This prototype does not yet include accounts or cloud synchronisation.
