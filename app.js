@@ -95,7 +95,10 @@ switchView=function(id){
   APP_VIEWS.forEach(v=>{const el=$(v);if(el)el.classList.toggle('hidden',v!==id)});
   document.body.dataset.view=id;
   document.querySelectorAll('[data-route]').forEach(el=>el.classList.toggle('active',el.dataset.route===id||(id==='historyDetailView'&&el.dataset.route==='historyView')));
+  const secondaryViews=['compareFriendsView','drillLibraryView','settingsView','aboutView'];
+  document.getElementById('moreNavBtn')?.classList.toggle('active',secondaryViews.includes(id));
   document.querySelector('.main-nav')?.classList.remove('open');
+  closeMoreNavigation();
   if(id==='insightsView')renderJourneyInsights();
   if(!suppressRoutePush){const hash=viewToHash(id);if(location.hash!==hash)history.pushState({view:id},'',hash)}
   suppressRoutePush=false;
@@ -109,10 +112,31 @@ function routeTo(id){
   switchView(id);
   $('resetHeaderBtn')?.classList.toggle('hidden',id!=='assessmentView');
 }
+function openMoreNavigation(){
+  $('moreNavPanel')?.classList.add('open');
+  $('moreNavPanel')?.setAttribute('aria-hidden','false');
+  $('moreNavBackdrop')?.classList.remove('hidden');
+  $('moreNavBtn')?.setAttribute('aria-expanded','true');
+  document.body.classList.add('more-nav-open');
+}
+function closeMoreNavigation(){
+  $('moreNavPanel')?.classList.remove('open');
+  $('moreNavPanel')?.setAttribute('aria-hidden','true');
+  $('moreNavBackdrop')?.classList.add('hidden');
+  $('moreNavBtn')?.setAttribute('aria-expanded','false');
+  document.body.classList.remove('more-nav-open');
+}
 function setupAppNavigation(){
   document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();routeTo(el.dataset.route)}));
   document.querySelectorAll('[data-action="start"]').forEach(el=>el.addEventListener('click',()=>openTester(false)));
   $('mobileMenuBtn')?.addEventListener('click',()=>document.querySelector('.main-nav')?.classList.toggle('open'));
+  $('moreNavBtn')?.addEventListener('click',()=>{
+    const open=!$('moreNavPanel')?.classList.contains('open');
+    open?openMoreNavigation():closeMoreNavigation();
+  });
+  $('closeMoreNavBtn')?.addEventListener('click',closeMoreNavigation);
+  $('moreNavBackdrop')?.addEventListener('click',closeMoreNavigation);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMoreNavigation()});
   window.addEventListener('popstate',()=>{suppressRoutePush=true;routeTo(hashToView())});
   if(location.hash&&location.hash!=='#home'){suppressRoutePush=true;routeTo(hashToView())}else history.replaceState({view:'landingView'},'','#home');
 }

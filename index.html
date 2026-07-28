@@ -17,21 +17,39 @@
       <span class="brand-mark">P</span><span>PickleRate</span>
     </a>
     <nav class="main-nav" aria-label="Main navigation">
-      <button data-route="landingView" class="nav-link active">🏠 <span>Home</span></button>
-      <button data-action="start" class="nav-link">📝 <span>Assessment</span></button>
-      <button id="historyHeaderBtn" data-route="historyView" class="nav-link">📈 <span>My Journey</span></button>
-      <button data-route="insightsView" class="nav-link">🧠 <span>Insights</span></button>
-      <button data-route="skillsView" class="nav-link">🎯 <span>Skills</span></button>
-      <button data-route="practiceView" class="nav-link">🏋️ <span>Practice Hub</span></button>
-      <button data-route="compareFriendsView" class="nav-link">👥 <span>Compare Friends</span></button>
-      <button data-route="drillLibraryView" class="nav-link">📚 <span>Drill Library</span></button>
-      <button data-route="settingsView" class="nav-link">⚙️ <span>Settings</span></button>
+      <button data-route="landingView" class="nav-link active"><span>Home</span></button>
+      <button data-action="start" class="nav-link"><span>Assessment</span></button>
+      <button id="historyHeaderBtn" data-route="historyView" class="nav-link"><span>My Journey</span></button>
+      <button data-route="insightsView" class="nav-link"><span>Insights</span></button>
+      <button data-route="skillsView" class="nav-link"><span>Skills</span></button>
+      <button data-route="practiceView" class="nav-link"><span>Practice Hub</span></button>
+      <button id="moreNavBtn" class="nav-link more-nav-btn" type="button" aria-expanded="false" aria-controls="moreNavPanel">
+        <span>More</span><span class="more-chevron" aria-hidden="true">›</span>
+      </button>
     </nav>
     <div class="header-actions">
       <button id="mobileMenuBtn" class="icon-btn mobile-menu" type="button" aria-label="Toggle navigation">☰</button>
       <button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button>
     </div>
   </header>
+
+
+  <div id="moreNavBackdrop" class="more-nav-backdrop hidden" aria-hidden="true"></div>
+  <aside id="moreNavPanel" class="more-nav-panel" aria-label="More navigation" aria-hidden="true">
+    <div class="more-nav-header">
+      <div>
+        <span class="eyebrow">MORE</span>
+        <h2>Explore PickleRate</h2>
+      </div>
+      <button id="closeMoreNavBtn" class="icon-btn" type="button" aria-label="Close more navigation">×</button>
+    </div>
+    <div class="more-nav-links">
+      <button data-route="compareFriendsView" class="more-nav-link"><span>Compare Friends</span><small>Compare ratings, skills and shared practice priorities.</small></button>
+      <button data-route="drillLibraryView" class="more-nav-link"><span>Drill Library</span><small>Browse drills by skill, difficulty and benchmark.</small></button>
+      <button data-route="settingsView" class="more-nav-link"><span>Settings</span><small>Manage profile, appearance, goals and saved data.</small></button>
+      <button data-route="aboutView" class="more-nav-link"><span>About PickleRate</span><small>Read the philosophy, methodology and FAQs.</small></button>
+    </div>
+  </aside>
 
   <main>
     <section id="landingView" class="view landing-view">
