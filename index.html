@@ -13,10 +13,20 @@
 <body>
   <div class="bg-orb orb-one"></div><div class="bg-orb orb-two"></div>
   <header class="site-header">
-    <a class="brand" href="#" aria-label="PickleRate home">
+    <a class="brand" href="#home" data-route="landingView" aria-label="PickleRate home">
       <span class="brand-mark">P</span><span>PickleRate</span>
     </a>
-    <div class="header-actions"><button id="historyHeaderBtn" class="ghost-btn" type="button">History</button><button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button></div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button data-route="landingView" class="nav-link active">Home</button>
+      <button data-action="start" class="nav-link">Assessment</button>
+      <button id="historyHeaderBtn" data-route="historyView" class="nav-link">My Journey</button>
+      <button data-route="insightsView" class="nav-link">Insights</button>
+      <button data-route="aboutView" class="nav-link">About</button>
+    </nav>
+    <div class="header-actions">
+      <button id="mobileMenuBtn" class="icon-btn mobile-menu" type="button" aria-label="Toggle navigation">☰</button>
+      <button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button>
+    </div>
   </header>
 
   <main>
@@ -27,7 +37,8 @@
         <p>Estimate your playing level, understand your strongest skills, and get focused improvement priorities—without reducing your game to one vague number.</p>
         <div class="hero-actions">
           <button id="startBtn" class="primary-btn" type="button">Start assessment <span>→</span></button>
-          <button id="historyBtn" class="secondary-btn" type="button">View history</button>
+          <button id="historyBtn" class="secondary-btn" type="button">View my journey</button>
+          <button class="secondary-btn" type="button" data-route="aboutView">Learn more</button>
           <button id="resumeBtn" class="secondary-btn hidden" type="button">Resume assessment</button>
         </div>
         <p class="microcopy">43 questions · approximately 10–15 minutes · progress saves automatically</p>
@@ -45,6 +56,15 @@
           <div><span>Competitive validation</span><b>3.5</b><i style="--w:70%"></i></div>
         </div>
         <div class="mini-insight"><span>↑</span><div><b>Strongest area</b><p>Resets and defence</p></div></div>
+      </div>
+      <div class="home-sections">
+        <section class="feature-strip glass-card">
+          <div><strong>43</strong><span>Match-based questions</span></div>
+          <div><strong>20+</strong><span>Underlying skills</span></div>
+          <div><strong>3</strong><span>Evidence pillars</span></div>
+          <div><strong>1</strong><span>Focused improvement plan</span></div>
+        </section>
+        <section class="how-card glass-card"><span class="eyebrow">HOW IT WORKS</span><h2>More than a rating quiz</h2><div class="how-grid"><div><b>1</b><h3>Describe recent play</h3><p>Answer observable questions based on normal competitive performance.</p></div><div><b>2</b><h3>Build a skill profile</h3><p>Related evidence estimates execution, decisions and competitive transfer.</p></div><div><b>3</b><h3>Improve with purpose</h3><p>Receive explanations, priorities and drills linked to your weakest skills.</p></div></div></section>
       </div>
     </section>
 
@@ -151,9 +171,28 @@
     </section>
 
     <section id="historyView" class="view history-view hidden">
-      <div class="history-heading"><div><span class="eyebrow">ASSESSMENT HISTORY</span><h1>Your PickleRate journey</h1><p>Each card is a saved snapshot. Open one to revisit its original scores, explanations, answers and drills.</p></div><div class="history-actions"><button id="exportHistoryCsvBtn" class="secondary-btn">Export CSV</button><button id="exportHistoryJsonBtn" class="secondary-btn">Export JSON</button><button id="clearHistoryBtn" class="ghost-btn">Clear history</button></div></div>
+      <div class="history-heading"><div><span class="eyebrow">MY JOURNEY</span><h1>Your PickleRate journey</h1><p>Each card is a saved snapshot. Open one to revisit its original scores, explanations, answers and drills.</p></div><div class="history-actions"><button id="exportHistoryCsvBtn" class="secondary-btn">Export CSV</button><button id="exportHistoryJsonBtn" class="secondary-btn">Export JSON</button><button id="clearHistoryBtn" class="ghost-btn">Clear history</button></div></div>
       <div id="historySummary" class="history-summary"></div>
       <div id="historyList" class="history-list"></div>
+    </section>
+
+
+    <section id="insightsView" class="view insights-view hidden">
+      <div class="page-heading"><span class="eyebrow">LONG-TERM INSIGHTS</span><h1>See how your game is changing</h1><p>Insights combine your saved assessments to reveal trends, persistent strengths and the areas offering the greatest return on practice.</p></div>
+      <div id="journeyInsights"></div>
+    </section>
+
+    <section id="aboutView" class="view about-view hidden">
+      <div class="page-heading"><span class="eyebrow">ABOUT PICKLERATE</span><h1>A rating should explain your game.</h1><p>PickleRate estimates level from multiple pieces of match-based evidence instead of relying on one result, one highlight or one vague self-rating.</p></div>
+      <div class="about-grid">
+        <article class="glass-card about-card wide"><span class="eyebrow">OUR PHILOSOPHY</span><h2>Consistency matters more than isolated brilliance</h2><p>We do not believe one ATP, one tournament win or one exceptional session defines a player. The assessment focuses on repeatable execution, sound decisions and how reliably those abilities transfer into competitive play.</p></article>
+        <article class="glass-card about-card"><strong class="about-percent">70%</strong><h2>Technical Ability</h2><p>Core shot execution, movement, consistency, resets, defence and attacking quality.</p></article>
+        <article class="glass-card about-card"><strong class="about-percent">20%</strong><h2>Tactical Intelligence</h2><p>Selection, patience, positioning, targeting, pattern recognition and adaptation.</p></article>
+        <article class="glass-card about-card"><strong class="about-percent">10%</strong><h2>Competitive Validation</h2><p>Evidence that your skills hold up under pressure, stronger opponents and unfamiliar partners.</p></article>
+        <article class="glass-card about-card wide"><span class="eyebrow">CONFIDENCE</span><h2>How well does the evidence agree?</h2><p>Confidence reflects answer completeness, agreement among related skills and the amount of competitive evidence available. Limited tournament experience should lower certainty—not automatically lower your technical rating.</p></article>
+        <article class="glass-card about-card wide"><span class="eyebrow">WHY MULTIPLE QUESTIONS?</span><h2>Important skills need more than one observation</h2><p>A third-shot profile can include overall drop success, forehand and backhand execution, adjustment to difficult returns and fifth-shot control. Agreement across these observations creates a stronger estimate than any single question.</p></article>
+        <article class="glass-card about-card wide"><span class="eyebrow">ROADMAP</span><h2>Built to improve with real evidence</h2><div class="roadmap-tags"><span>Calibration data</span><span>Adaptive questions</span><span>Coach mode</span><span>Video analysis</span><span>Partner assessment</span><span>Tournament tracking</span></div></article>
+      </div>
     </section>
 
     <section id="historyDetailView" class="view history-detail-view hidden">

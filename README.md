@@ -1,36 +1,33 @@
-# PickleRate Website
+# PickleRate
 
-A standalone static website built around the three-pillar PickleRate model:
+A browser-based pickleball self-assessment with an explainable three-pillar rating model.
 
-- Technical Ability: 70%
-- Tactical Intelligence: 20%
-- Competitive Validation: 10%
+## Main sections
+
+- **Home** — product introduction and assessment overview
+- **Assessment** — optional tester profile and 43-question evaluation
+- **My Journey** — saved assessment cards and full historical reports
+- **Insights** — rating trends, strengths, priorities and skill changes
+- **About** — methodology, confidence scoring and roadmap
+
+Navigation uses browser history, so Back and Forward move smoothly between app sections. Completed assessments remain immutable snapshots in browser localStorage and can be exported as CSV or JSON.
 
 ## Run locally
 
-Browsers may block loading `questions.json` when opening `index.html` directly. Run the folder through a small local server:
+Do not open `index.html` directly because the browser must load `questions.json`.
+
+From this folder run:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open:
 
-You can also deploy the folder directly to GitHub Pages, Netlify, Vercel or another static host.
+```text
+http://localhost:8000
+```
 
-## Main features
+## Storage
 
-- 43-question assessment
-- Saved progress using localStorage
-- One-question-at-a-time interface
-- Technical, tactical and competitive pillar scoring
-- Evidence-type trust weighting
-- Cross-question agreement and confidence score
-- Skill-level breakdown
-- Strength and improvement insights
-- Downloadable text results
-- Responsive desktop/mobile layout
-
-## Important calibration note
-
-The weights and confidence rules are a strong first model, not a validated rating standard. Update thresholds and mappings after collecting results from players with reliable external ratings.
+Assessment progress and history are stored locally in the current browser. Clearing browser storage removes saved data. Export history before clearing it.
