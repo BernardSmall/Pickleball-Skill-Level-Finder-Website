@@ -16,7 +16,7 @@
     <a class="brand" href="#" aria-label="PickleRate home">
       <span class="brand-mark">P</span><span>PickleRate</span>
     </a>
-    <button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button>
+    <div class="header-actions"><button id="historyHeaderBtn" class="ghost-btn" type="button">History</button><button id="resetHeaderBtn" class="ghost-btn hidden" type="button">Start over</button></div>
   </header>
 
   <main>
@@ -27,6 +27,7 @@
         <p>Estimate your playing level, understand your strongest skills, and get focused improvement priorities—without reducing your game to one vague number.</p>
         <div class="hero-actions">
           <button id="startBtn" class="primary-btn" type="button">Start assessment <span>→</span></button>
+          <button id="historyBtn" class="secondary-btn" type="button">View history</button>
           <button id="resumeBtn" class="secondary-btn hidden" type="button">Resume assessment</button>
         </div>
         <p class="microcopy">43 questions · approximately 10–15 minutes · progress saves automatically</p>
@@ -44,6 +45,23 @@
           <div><span>Competitive validation</span><b>3.5</b><i style="--w:70%"></i></div>
         </div>
         <div class="mini-insight"><span>↑</span><div><b>Strongest area</b><p>Resets and defence</p></div></div>
+      </div>
+    </section>
+
+    <section id="testerView" class="view tester-view hidden">
+      <div class="tester-card glass-card">
+        <span class="eyebrow">OPTIONAL TESTER PROFILE</span>
+        <h1>Tell us about this assessment</h1>
+        <p>This helps calibrate PickleRate. You can stay anonymous and skip any field.</p>
+        <div class="form-grid">
+          <label>Tester name or ID<input id="testerName" placeholder="e.g. Player 07 or Bernard" /></label>
+          <label>Known level<input id="knownLevel" type="number" min="1" max="5.5" step="0.1" placeholder="e.g. 3.5" /></label>
+          <label>Rating source<select id="ratingSource"><option value="">Not provided</option><option>Coach assessment</option><option>DUPR</option><option>Club rating</option><option>Tournament division</option><option>Self-estimate</option></select></label>
+          <label>Years played<input id="yearsPlayed" type="number" min="0" max="60" step="0.5" placeholder="e.g. 2" /></label>
+          <label>Play type<select id="playType"><option value="">Not provided</option><option>Mostly recreational</option><option>Mostly competitive</option><option>Balanced</option></select></label>
+          <label>Environment<select id="environment"><option value="">Not provided</option><option>Mostly indoor</option><option>Mostly outdoor</option><option>Both</option></select></label>
+        </div>
+        <div class="tester-actions"><button id="skipTesterBtn" class="secondary-btn" type="button">Skip</button><button id="beginAssessmentBtn" class="primary-btn" type="button">Begin assessment <span>→</span></button></div>
       </div>
     </section>
 
@@ -124,10 +142,23 @@
         </article>
       </div>
 
+      <article class="feedback-card glass-card"><div class="card-heading"><div><span class="eyebrow">TESTER FEEDBACK</span><h2>How accurate did this feel?</h2></div></div><textarea id="testerFeedback" rows="4" placeholder="What felt accurate, confusing, missing or unfair?"></textarea><button id="saveFeedbackBtn" class="secondary-btn" type="button">Save feedback</button></article>
+
       <div class="results-actions">
         <button id="retakeBtn" class="secondary-btn" type="button">Retake assessment</button>
         <button id="downloadBtn" class="primary-btn" type="button">Download results <span>↓</span></button>
       </div>
+    </section>
+
+    <section id="historyView" class="view history-view hidden">
+      <div class="history-heading"><div><span class="eyebrow">ASSESSMENT HISTORY</span><h1>Your PickleRate journey</h1><p>Each card is a saved snapshot. Open one to revisit its original scores, explanations, answers and drills.</p></div><div class="history-actions"><button id="exportHistoryCsvBtn" class="secondary-btn">Export CSV</button><button id="exportHistoryJsonBtn" class="secondary-btn">Export JSON</button><button id="clearHistoryBtn" class="ghost-btn">Clear history</button></div></div>
+      <div id="historySummary" class="history-summary"></div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section id="historyDetailView" class="view history-detail-view hidden">
+      <button id="backToHistoryBtn" class="text-btn" type="button">← Back to history</button>
+      <div id="historyDetail"></div>
     </section>
   </main>
 
