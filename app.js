@@ -98,6 +98,8 @@ switchView=function(id){
   const secondaryViews=['compareFriendsView','drillLibraryView','settingsView'];
   document.getElementById('moreNavBtn')?.classList.toggle('active',secondaryViews.includes(id));
   document.querySelector('.main-nav')?.classList.remove('open');
+  $('mobileMenuBtn')?.setAttribute('aria-expanded','false');
+  $('mobileMenuBtn')?.setAttribute('aria-label','Open navigation');
   closeMoreNavigation();
   if(id==='insightsView')renderJourneyInsights();
   if(!suppressRoutePush){const hash=viewToHash(id);if(location.hash!==hash)history.pushState({view:id},'',hash)}
@@ -129,7 +131,7 @@ function closeMoreNavigation(){
 function setupAppNavigation(){
   document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();routeTo(el.dataset.route)}));
   document.querySelectorAll('[data-action="start"]').forEach(el=>el.addEventListener('click',()=>openTester(false)));
-  $('mobileMenuBtn')?.addEventListener('click',()=>document.querySelector('.main-nav')?.classList.toggle('open'));
+  $('mobileMenuBtn')?.addEventListener('click',()=>{const nav=document.querySelector('.main-nav');const isOpen=nav?.classList.toggle('open');$('mobileMenuBtn')?.setAttribute('aria-expanded',String(Boolean(isOpen)));$('mobileMenuBtn')?.setAttribute('aria-label',isOpen?'Close navigation':'Open navigation')});
   $('moreNavBtn')?.addEventListener('click',()=>{
     const open=!$('moreNavPanel')?.classList.contains('open');
     open?openMoreNavigation():closeMoreNavigation();
