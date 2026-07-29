@@ -287,6 +287,33 @@
     </section>
   </main>
 
+
+  <div id="tourWelcome" class="tour-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="tourWelcomeTitle">
+    <div class="tour-welcome-card">
+      <img src="picklerate-logo.svg" alt="" class="tour-logo" />
+      <span class="eyebrow">WELCOME TO PICKLERATE</span>
+      <h2 id="tourWelcomeTitle">Would you like a quick tour?</h2>
+      <p>Learn where to assess your game, review progress, understand your skills and turn results into focused practice.</p>
+      <div class="tour-welcome-actions">
+        <button id="startTourBtn" class="primary-btn" type="button">Start tour</button>
+        <button id="skipTourBtn" class="secondary-btn" type="button">Skip for now</button>
+        <button id="dismissTourBtn" class="text-btn" type="button">Don’t show again</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tourOverlay" class="tour-overlay hidden" aria-hidden="true"></div>
+  <aside id="tourPopover" class="tour-popover hidden" role="dialog" aria-live="polite" aria-label="Website tour">
+    <div class="tour-popover-top"><span id="tourProgress">1 of 8</span><button id="closeTourBtn" class="icon-btn" type="button" aria-label="Close tour">×</button></div>
+    <h2 id="tourTitle"></h2>
+    <p id="tourText"></p>
+    <div class="tour-popover-actions">
+      <button id="tourBackBtn" class="secondary-btn" type="button">Back</button>
+      <button id="tourSkipBtn" class="text-btn" type="button">Skip tour</button>
+      <button id="tourNextBtn" class="primary-btn" type="button">Next</button>
+    </div>
+  </aside>
+
   <footer><span>PickleRate</span><p>Know your game. Improve with purpose.</p></footer>
   <script src="app.js"></script>
 </body>

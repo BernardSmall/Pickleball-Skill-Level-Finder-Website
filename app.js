@@ -409,3 +409,96 @@ function renderSettings(){
  $('settingsDeleteFriends').onclick=()=>{if(confirm('Delete all imported friend profiles?')){localStorage.removeItem(FRIENDS_KEY);renderSettings()}};
  $('settingsDeleteAll').onclick=()=>{if(confirm('Delete all PickleRate assessments, practice progress, friends and settings from this browser?')){[STORAGE_KEY,HISTORY_KEY,PRACTICE_KEY,FRIENDS_KEY,SETTINGS_KEY].forEach(k=>localStorage.removeItem(k));location.hash='#home';location.reload()}};
 }
+
+// Optional first-visit website tour.
+const TOUR_KEY='picklerate-v3-tour';
+const tourSteps=[
+  {route:'landingView',selector:'.brand',title:'Your PickleRate home',text:'Click the PickleRate logo at any time to return to your dashboard and latest development overview.'},
+  {route:'landingView',selector:'[data-action="start"]',title:'Assess your current game',text:'The assessment collects match-based evidence across technical ability, tactical decisions and competitive transfer.'},
+  {route:'historyView',selector:'[data-route="historyView"]',title:'Follow your journey',text:'My Journey stores every completed assessment as a frozen report, so older scores, answers and recommendations never change.'},
+  {route:'insightsView',selector:'[data-route="insightsView"]',title:'Understand your trends',text:'Insights turns assessment history into strengths, recurring limitations, improvement patterns and suggested priorities.'},
+  {route:'skillsView',selector:'[data-route="skillsView"]',title:'Explore individual skills',text:'Skills lets you open each measured area to review its score, supporting questions, trend and benchmark toward your next level.'},
+  {route:'practiceView',selector:'[data-route="practiceView"]',title:'Turn results into practice',text:'Practice Hub converts your weakest measured skills into progressions, success benchmarks, common mistakes and session notes.'},
+  {route:'aboutView',selector:'[data-route="aboutView"]',title:'See how PickleRate works',text:'About explains the philosophy, pillar weighting, confidence model, methodology and frequently asked questions.'},
+  {route:'more',selector:'#moreNavBtn',title:'Find the supporting tools',text:'More opens Compare Friends, the Drill Library and Settings. You can also restart this tour from Settings.'}
+];
+let tourIndex=0;
+function tourState(){try{return JSON.parse(localStorage.getItem(TOUR_KEY))||{}}catch{return {}}}
+function saveTourState(value){localStorage.setItem(TOUR_KEY,JSON.stringify(value))}
+function showTourWelcome(force=false){
+  const state=tourState();
+  if(!force&&(state.completed||state.dismissed))return;
+  $('tourWelcome')?.classList.remove('hidden');
+}
+function hideTourWelcome(){$('tourWelcome')?.classList.add('hidden')}
+function clearTourHighlight(){document.querySelectorAll('.tour-highlight').forEach(el=>el.classList.remove('tour-highlight'))}
+function isMobileTour(){return window.matchMedia('(max-width: 900px)').matches}
+function prepareTourTarget(step){
+  if(step.route==='more'){
+    if(isMobileTour())document.querySelector('.main-nav')?.classList.add('open');
+    openMoreNavigation();
+  }else{
+    closeMoreNavigation();
+    routeTo(step.route);
+    if(isMobileTour()&&step.selector?.includes('data-route'))document.querySelector('.main-nav')?.classList.add('open');
+  }
+}
+function positionTourPopover(target){
+  const pop=$('tourPopover');if(!pop||!target)return;
+  if(isMobileTour()){pop.style.left='12px';pop.style.right='12px';pop.style.bottom='12px';pop.style.top='auto';return}
+  const r=target.getBoundingClientRect(),w=390,gap=18;
+  let left=Math.min(window.innerWidth-w-16,Math.max(16,r.left+r.width/2-w/2));
+  let top=r.bottom+gap;
+  if(top+300>window.innerHeight)top=Math.max(16,r.top-300-gap);
+  pop.style.left=`${left}px`;pop.style.top=`${top}px`;pop.style.right='auto';pop.style.bottom='auto';
+}
+function renderTourStep(){
+  clearTourHighlight();
+  const step=tourSteps[tourIndex];
+  prepareTourTarget(step);
+  setTimeout(()=>{
+    let target=document.querySelector(step.selector);
+    if(step.route==='more'&&$('moreNavPanel')?.classList.contains('open'))target=$('moreNavPanel');
+    if(!target)return;
+    target.classList.add('tour-highlight');
+    target.scrollIntoView({behavior:'smooth',block:'center',inline:'center'});
+    $('tourProgress').textContent=`${tourIndex+1} of ${tourSteps.length}`;
+    $('tourTitle').textContent=step.title;$('tourText').textContent=step.text;
+    $('tourBackBtn').disabled=tourIndex===0;
+    $('tourNextBtn').textContent=tourIndex===tourSteps.length-1?'Finish':'Next';
+    $('tourOverlay').classList.remove('hidden');$('tourOverlay').setAttribute('aria-hidden','false');
+    $('tourPopover').classList.remove('hidden');
+    positionTourPopover(target);
+  },180);
+}
+function startWebsiteTour(){hideTourWelcome();tourIndex=0;renderTourStep()}
+function finishWebsiteTour(completed=true){
+  clearTourHighlight();$('tourOverlay')?.classList.add('hidden');$('tourOverlay')?.setAttribute('aria-hidden','true');$('tourPopover')?.classList.add('hidden');
+  document.querySelector('.main-nav')?.classList.remove('open');closeMoreNavigation();
+  if(completed)saveTourState({...tourState(),completed:true,dismissed:false,completedAt:new Date().toISOString()});
+  routeTo('landingView');
+}
+function restartWebsiteTour(){saveTourState({completed:false,dismissed:false});startWebsiteTour()}
+$('startTourBtn')?.addEventListener('click',startWebsiteTour);
+$('skipTourBtn')?.addEventListener('click',()=>{hideTourWelcome();saveTourState({...tourState(),skippedAt:new Date().toISOString()})});
+$('dismissTourBtn')?.addEventListener('click',()=>{hideTourWelcome();saveTourState({...tourState(),dismissed:true})});
+$('closeTourBtn')?.addEventListener('click',()=>finishWebsiteTour(false));
+$('tourSkipBtn')?.addEventListener('click',()=>finishWebsiteTour(false));
+$('tourBackBtn')?.addEventListener('click',()=>{if(tourIndex>0){tourIndex--;renderTourStep()}});
+$('tourNextBtn')?.addEventListener('click',()=>{if(tourIndex<tourSteps.length-1){tourIndex++;renderTourStep()}else finishWebsiteTour(true)});
+window.addEventListener('resize',()=>{const target=document.querySelector('.tour-highlight');if(target&&!$('tourPopover')?.classList.contains('hidden'))positionTourPopover(target)});
+window.restartWebsiteTour=restartWebsiteTour;
+
+// Add tour controls whenever Settings is rendered.
+const renderSettingsWithoutTour=renderSettings;
+renderSettings=function(){
+  renderSettingsWithoutTour();
+  const host=$('settingsApp');if(!host)return;
+  const card=document.createElement('article');card.className='detail-card';
+  card.innerHTML='<span class="eyebrow">WEBSITE TOUR</span><h2>Learn your way around PickleRate</h2><p>Restart the guided walkthrough of assessments, progress, insights, skills, practice and supporting tools.</p><div class="stacked-actions"><button id="settingsStartTour" class="secondary-btn" type="button">Start tour again</button><button id="settingsResetTour" class="ghost-btn" type="button">Show welcome next visit</button></div>';
+  host.appendChild(card);
+  $('settingsStartTour').onclick=restartWebsiteTour;
+  $('settingsResetTour').onclick=()=>{localStorage.removeItem(TOUR_KEY);$('settingsResetTour').textContent='Welcome reset ✓'};
+};
+
+window.addEventListener('load',()=>setTimeout(()=>showTourWelcome(false),450));
