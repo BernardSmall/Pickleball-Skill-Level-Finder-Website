@@ -95,7 +95,7 @@ switchView=function(id){
   APP_VIEWS.forEach(v=>{const el=$(v);if(el)el.classList.toggle('hidden',v!==id)});
   document.body.dataset.view=id;
   document.querySelectorAll('[data-route]').forEach(el=>el.classList.toggle('active',el.dataset.route===id||(id==='historyDetailView'&&el.dataset.route==='historyView')));
-  const secondaryViews=['compareFriendsView','drillLibraryView','settingsView','aboutView'];
+  const secondaryViews=['compareFriendsView','drillLibraryView','settingsView'];
   document.getElementById('moreNavBtn')?.classList.toggle('active',secondaryViews.includes(id));
   document.querySelector('.main-nav')?.classList.remove('open');
   closeMoreNavigation();
