@@ -224,3 +224,64 @@ html[data-theme="dark"] .tour-welcome-card p,html[data-theme="dark"] .tour-popov
     border-color:#75a28d !important;
   }
 }
+
+/* Solid More panel on laptop and desktop as well as mobile */
+.more-nav-backdrop{
+  background:rgba(3,14,10,.72) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.more-nav-panel{
+  background:#ffffff !important;
+  opacity:1 !important;
+  border-left:1px solid #a8bab1 !important;
+  box-shadow:-30px 0 80px rgba(0,18,11,.48) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.more-nav-header{
+  position:sticky;
+  top:-1px;
+  z-index:2;
+  background:#ffffff !important;
+  opacity:1 !important;
+}
+.more-nav-links{
+  background:#ffffff !important;
+}
+.more-nav-link{
+  background:#f5f8f6 !important;
+  border:1px solid #bdcbc4 !important;
+  color:#14241f !important;
+  box-shadow:0 4px 14px rgba(13,49,37,.06);
+}
+.more-nav-link small{color:#52635b !important}
+.more-nav-link:hover,
+.more-nav-link.active{
+  background:#e4f2eb !important;
+  border-color:#87b39f !important;
+}
+html[data-theme="dark"] .more-nav-backdrop{
+  background:rgba(0,0,0,.82) !important;
+}
+html[data-theme="dark"] .more-nav-panel,
+html[data-theme="dark"] .more-nav-header,
+html[data-theme="dark"] .more-nav-links{
+  background:#17221d !important;
+  opacity:1 !important;
+}
+html[data-theme="dark"] .more-nav-panel{
+  border-left-color:#52635a !important;
+  box-shadow:-30px 0 80px rgba(0,0,0,.72) !important;
+}
+html[data-theme="dark"] .more-nav-link{
+  background:#202f28 !important;
+  border-color:#52635a !important;
+  color:#f0f6f2 !important;
+}
+html[data-theme="dark"] .more-nav-link small{color:#bdd0c5 !important}
+html[data-theme="dark"] .more-nav-link:hover,
+html[data-theme="dark"] .more-nav-link.active{
+  background:#2b4237 !important;
+  border-color:#75a28d !important;
+}
