@@ -118,3 +118,22 @@ html[data-theme="dark"] .main-nav .more-nav-btn{background:#202f28;border-color:
 html[data-theme="dark"] .more-nav-panel,html[data-theme="dark"] .more-nav-header{background:#17221d;border-color:#46584f}
 html[data-theme="dark"] .more-nav-link{background:#202f28;border-color:#46584f}
 html[data-theme="dark"] .more-nav-link:hover,html[data-theme="dark"] .more-nav-link.active{background:#2b4237;border-color:#638875}
+
+/* Guided onboarding tour */
+.tour-modal-backdrop{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:20px;background:rgba(12,20,16,.72);backdrop-filter:blur(5px)}
+.tour-welcome-card{width:min(520px,100%);padding:34px;border:1px solid #d8e5dd;border-radius:24px;background:#fff;box-shadow:0 30px 90px rgba(8,20,13,.3);text-align:center}
+.tour-logo{width:68px;height:68px;margin:0 auto 16px;display:block}
+.tour-welcome-card h2{margin:8px 0 12px;font-size:30px}
+.tour-welcome-card p{margin:0 auto 24px;max-width:440px;color:var(--muted);line-height:1.65}
+.tour-welcome-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.tour-overlay{position:fixed;inset:0;z-index:1090;background:rgba(8,16,12,.66);pointer-events:none}
+.tour-popover{position:fixed;z-index:1110;width:min(390px,calc(100vw - 24px));padding:22px;border:1px solid #cfe0d6;border-radius:20px;background:#fff;box-shadow:0 24px 70px rgba(5,15,9,.36)}
+.tour-popover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tour-popover-top>span{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.tour-popover h2{margin:0 0 8px;font-size:23px}
+.tour-popover p{margin:0 0 20px;color:var(--muted);line-height:1.58}
+.tour-popover-actions{display:flex;align-items:center;gap:8px}.tour-popover-actions .text-btn{margin-left:auto}.tour-popover-actions button{white-space:nowrap}
+.tour-highlight{position:relative!important;z-index:1100!important;border-radius:14px!important;box-shadow:0 0 0 4px #fff,0 0 0 8px #50a478,0 18px 48px rgba(0,0,0,.28)!important;transition:box-shadow .2s ease,transform .2s ease;transform:translateZ(0)}
+html[data-theme="dark"] .tour-welcome-card,html[data-theme="dark"] .tour-popover{background:#17221d;border-color:#46584f;color:#eef6f1}
+html[data-theme="dark"] .tour-welcome-card p,html[data-theme="dark"] .tour-popover p{color:#bdcec4}
+@media(max-width:760px){.tour-welcome-card{padding:26px 20px}.tour-welcome-card h2{font-size:25px}.tour-welcome-actions{flex-direction:column}.tour-welcome-actions button{width:100%}.tour-popover{left:12px!important;right:12px!important;bottom:12px!important;top:auto!important;width:auto;padding:18px}.tour-popover-actions{flex-wrap:wrap}.tour-popover-actions .text-btn{order:3;width:100%;margin:2px 0 0}.tour-highlight{box-shadow:0 0 0 3px #fff,0 0 0 6px #50a478,0 14px 40px rgba(0,0,0,.3)!important}}
