@@ -71,3 +71,50 @@ body.more-nav-open{overflow:hidden}
 @media(max-width:650px){
   .more-nav-panel{width:100%;padding:22px 18px}
 }
+
+/* Mobile navigation clarity and logo trigger */
+.brand-logo{width:36px;height:36px;display:block;border-radius:11px;box-shadow:0 5px 14px rgba(22,95,73,.16)}
+.mobile-menu-logo{display:none;width:44px;height:44px;padding:4px;border:2px solid var(--green);border-radius:14px;background:#fff;box-shadow:0 7px 18px rgba(17,70,52,.14);cursor:pointer;align-items:center;justify-content:center;transition:transform .18s ease,box-shadow .18s ease}
+.mobile-menu-logo:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(17,70,52,.2)}
+.mobile-menu-logo img{display:block;width:34px;height:34px;border-radius:10px}
+
+@media(max-width:1100px){
+  .site-header{background:#f7faf8;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid #cbd8d1;box-shadow:0 5px 18px rgba(13,49,37,.1)}
+  .mobile-menu{display:none!important}
+  .mobile-menu-logo{display:inline-flex}
+  .main-nav{top:calc(100% + 10px);left:12px;right:12px;background:#fff;border:1px solid #b8c9c0;border-radius:18px;padding:10px;box-shadow:0 22px 55px rgba(9,38,28,.24);max-height:calc(100vh - 92px)}
+  .main-nav .nav-link{padding:14px 15px;border-radius:12px;color:#25352e;background:#fff;border:1px solid transparent;font-weight:700}
+  .main-nav .nav-link+ .nav-link{margin-top:3px}
+  .main-nav .nav-link:hover,.main-nav .nav-link.active{background:#e8f4ee;border-color:#bdd8cc;color:#124c3a}
+  .main-nav .more-nav-btn{background:#f2f6f4;border-color:#c4d2cb}
+  .main-nav .more-nav-btn[aria-expanded="true"]{background:#153f32;color:#fff;border-color:#153f32}
+  .more-nav-backdrop{background:rgba(4,20,14,.62);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .more-nav-panel{background:#fff;border-left:1px solid #aebfb6;box-shadow:-28px 0 70px rgba(3,24,16,.34)}
+  .more-nav-header{background:#fff}
+  .more-nav-link{background:#f8faf9;border-color:#c8d4ce;padding:18px}
+  .more-nav-link:hover,.more-nav-link.active{background:#e8f4ee;border-color:#9fc7b5}
+}
+
+@media(max-width:650px){
+  .site-header{padding:.7rem .85rem;min-height:66px}
+  .brand{font-size:20px}
+  .brand-logo{width:40px;height:40px;border-radius:12px}
+  .brand span:last-child{display:inline}
+  .header-actions{display:flex;align-items:center;gap:8px}
+  .mobile-menu-logo{width:46px;height:46px;border-radius:14px}
+  .mobile-menu-logo img{width:36px;height:36px}
+  .main-nav{left:8px;right:8px;border-radius:16px;padding:8px}
+  .more-nav-panel{width:min(92vw,380px);padding:20px 16px;background:#fff}
+  .more-nav-header h2{font-size:23px}
+  .more-nav-link small{font-size:13px;line-height:1.5}
+}
+
+html[data-theme="dark"] .mobile-menu-logo{background:#17221d;border-color:#6ca98f}
+html[data-theme="dark"] .site-header{background:#101713;border-bottom-color:#405148;box-shadow:0 5px 18px rgba(0,0,0,.35)}
+html[data-theme="dark"] .main-nav{background:#17221d;border-color:#46584f;box-shadow:0 22px 55px rgba(0,0,0,.48)}
+html[data-theme="dark"] .main-nav .nav-link{background:#17221d;color:#e7f0eb}
+html[data-theme="dark"] .main-nav .nav-link:hover,html[data-theme="dark"] .main-nav .nav-link.active{background:#263a31;border-color:#52705f;color:#fff}
+html[data-theme="dark"] .main-nav .more-nav-btn{background:#202f28;border-color:#46584f}
+html[data-theme="dark"] .more-nav-panel,html[data-theme="dark"] .more-nav-header{background:#17221d;border-color:#46584f}
+html[data-theme="dark"] .more-nav-link{background:#202f28;border-color:#46584f}
+html[data-theme="dark"] .more-nav-link:hover,html[data-theme="dark"] .more-nav-link.active{background:#2b4237;border-color:#638875}
