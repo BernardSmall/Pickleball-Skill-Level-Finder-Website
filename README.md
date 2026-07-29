@@ -31,3 +31,8 @@ Assessment progress and completed reports are stored in browser `localStorage`. 
 
 ## Practice Hub
 The Practice Hub uses the latest saved assessment to prioritise five skills. It includes three-stage progressions, success benchmarks, common mistakes, video placeholders, session notes, completion tracking and an in-app 2–4 week reassessment date. Practice data is stored in browser localStorage.
+
+
+## Navigation update
+
+About now appears in the main navigation. The More panel contains Compare Friends, Drill Library, and Settings.
