@@ -27,7 +27,7 @@ const drills={
 let questions=[],answers={},index=0,showAllSkills=false,tester={},currentRecordId=null;
 const $=id=>document.getElementById(id);
 async function init(){
- try{questions=await fetch('questions.json').then(r=>{if(!r.ok)throw Error();return r.json()})}catch{document.body.innerHTML='<main style="padding:40px;font-family:sans-serif"><h1>Unable to load questions.json</h1><p>Run this folder through a local server.</p></main>';return}
+ try{questions=await fetch('data/questions.json').then(r=>{if(!r.ok)throw Error();return r.json()})}catch{document.body.innerHTML='<main style="padding:40px;font-family:sans-serif"><h1>Unable to load data/questions.json</h1><p>Run this folder through a local server.</p></main>';return}
  if(loadProgress()?.answers&&Object.keys(loadProgress().answers).length)$('resumeBtn').classList.remove('hidden');
  bindEvents();
 }

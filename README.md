@@ -1,38 +1,50 @@
-# PickleRate Professional Prototype
+# PickleRate
 
-A static browser-based PickleRate application with:
-
-- Professional Home and product story
-- Full 43-question assessment
-- Tester/calibration profile
-- Rich results dashboard and strength radar
-- Frozen historical reports in My Journey
-- Assessment comparisons, timeline and achievements
-- Long-term deterministic insights
-- Skill library and individual skill pages
-- Directional benchmarks and recommended drills
-- Expanded About, methodology and FAQ
-- CSV/JSON history export
+PickleRate is a browser-based pickleball assessment and player-development prototype.
 
 ## Run locally
 
-From this folder:
+From the project root:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open `http://localhost:8000`.
+Then open:
 
-## Storage
+```text
+http://localhost:8000
+```
 
-Assessment progress and completed reports are stored in browser `localStorage`. They remain on the same browser/device until cleared. This prototype does not yet include accounts or cloud synchronisation.
+Do not open `index.html` directly because the browser must fetch `data/questions.json` through a local web server.
 
+## Main folders
 
-## Practice Hub
-The Practice Hub uses the latest saved assessment to prioritise five skills. It includes three-stage progressions, success benchmarks, common mistakes, video placeholders, session notes, completion tracking and an in-app 2–4 week reassessment date. Practice data is stored in browser localStorage.
+```text
+PickleRate/
+├── index.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── images/
+│   │   └── picklerate-logo.svg
+│   └── js/
+│       └── main.js
+├── data/
+│   └── questions.json
+├── docs/
+│   └── PROJECT_STRUCTURE.md
+└── README.md
+```
 
+## Browser storage
 
-## Navigation update
+Assessment progress, completed reports, practice data, friend comparisons, settings and tour state are stored in `localStorage`. They remain tied to the current browser and device until cleared.
 
-About now appears in the main navigation. The More panel contains Compare Friends, Drill Library, and Settings.
+## Important files
+
+- `index.html` — application markup and page sections.
+- `assets/css/styles.css` — all visual styling and responsive rules.
+- `assets/js/main.js` — routing, assessment logic, storage, results, Practice Hub, tour and interaction logic.
+- `data/questions.json` — assessment question bank.
+- `docs/PROJECT_STRUCTURE.md` — detailed structure and editing guidance.
